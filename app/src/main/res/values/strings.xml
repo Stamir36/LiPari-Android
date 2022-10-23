@@ -1,0 +1,50 @@
+<resources>
+    <string name="app_name">LiPari</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="new_pari">Новое пари</string>
+    <string name="all">Все</string>
+    <string name="my_pari">Мои пари</string>
+    <string name="title_activity_details_pari">DetailsPari</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+    </string>
+    <string name="connect_pari">Присоединиться</string>
+    <string name="title_activity_login_unesell_account">LoginUnesellAccount</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="email">Электронная почта</string>
+    <string name="password">Пароль</string>
+    <string name="login_to_account">Войти в аккаунт</string>
+    <string name="error_login_data">Неверные данные входа. Проверте почту и пароль.</string>
+    <string name="connect_error">"Ошибка подключения. Проверьте интернет."</string>
+    <string name="host_error">"Ошибка хоста. Очень много запросов."</string>
+    <string name="welcome">Добро пожаловать</string>
+    <string name="auth_text">Авторизация в Unesell Account</string>
+    <string name="reg_text">Регистрация</string>
+    <string name="user_text">Пользователь</string>
+    <string name="active_pari">Активные пари</string>
+    <string name="ect">...</string>
+    <string name="Pari">Пари</string>
+    <string name="Description">Подробности и описание</string>
+    <string name="if_win">В случае выполнения:</string>
+    <string name="if_lose">В случае поражения:</string>
+    <string name="menu_information">Информация</string>
+    <string name="menu_comments">Комментарии</string>
+    <string name="challenged">Бросил вызов</string>
+    <string name="acceptedChellenge">Принял вызов</string>
+    <string name="zero_autor">Вызов никто не бросил</string>
+    <string name="zero_executor">Вызов никто не бросил</string>
+</resources>
