@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> info = new ArrayList<>();
     ArrayList<String> xp = new ArrayList<>();
+    ArrayList<String> status = new ArrayList<>();
     ArrayList<String> ID = new ArrayList<>();
     Context context;
 
@@ -102,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Snackbar.make(view, "New post", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                    Intent createPostIntent = new Intent(context, Create_Pari_Post.class);
+                    startActivity(createPostIntent);
                 }
             });
 
@@ -192,11 +194,12 @@ public class MainActivity extends AppCompatActivity {
                                 name.add(userData.getString("Name"));
                                 info.add(userData.getString("Info").replace("<br/>", "\n"));
                                 xp.add(userData.getString("xp_boost") + " XP");
+                                status.add(userData.getString("stasus"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        HelperAdapter helperAdapter = new HelperAdapter(name, info, xp, ID, MainActivity.this);
+                        HelperAdapter helperAdapter = new HelperAdapter(name, info, xp, ID, status, MainActivity.this);
                         recyclerView.setAdapter(helperAdapter);
                     }
                 },
@@ -236,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void clearRecurseViev(){
-        name.clear(); info.clear(); xp.clear(); ID.clear();
+        name.clear(); info.clear(); xp.clear(); ID.clear(); status.clear();
     }
 
     @Override

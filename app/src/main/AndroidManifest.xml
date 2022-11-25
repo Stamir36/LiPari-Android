@@ -20,6 +20,16 @@
         android:theme="@style/ThemeOverlay.Material3.DynamicColors.DayNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <activity
+            android:name=".Create_Pari_Post"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+
         <activity
             android:name=".SplashScreen"
             android:exported="false"
@@ -28,6 +38,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".LoginUnesellAccount"
             android:exported="false"
@@ -37,6 +48,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".DetailsPari"
             android:exported="false"
@@ -46,6 +58,7 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

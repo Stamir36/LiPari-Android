@@ -29,13 +29,15 @@ public class HelperAdapter extends RecyclerView.Adapter< HelperAdapter.MyViewCla
     ArrayList<String> info;
     ArrayList<String> xp;
     ArrayList<String> ID;
+    ArrayList<String> status;
     Context context;
 
-    public HelperAdapter(ArrayList<String> name, ArrayList<String> info, ArrayList<String> xp, ArrayList<String> ID, Context context) {
+    public HelperAdapter(ArrayList<String> name, ArrayList<String> info, ArrayList<String> xp, ArrayList<String> ID, ArrayList<String> status,  Context context) {
         this.name = name;
         this.info = info;
         this.xp = xp;
         this.ID = ID;
+        this.status = status;
         this.context = context;
     }
     @NonNull
@@ -51,6 +53,13 @@ public class HelperAdapter extends RecyclerView.Adapter< HelperAdapter.MyViewCla
         holder.name.setText(name.get(position));
         holder.info.setText(info.get(position));
         holder.xp.setText(xp.get(position));
+
+        if(status.get(position).equals("search")){ holder.status.setText(context.getResources().getString(R.string.status_1)); }
+        if(status.get(position).equals("go")){ holder.status.setText(context.getResources().getString(R.string.status_2)); }
+        if(status.get(position).equals("executor_lose")){ holder.status.setText(context.getResources().getString(R.string.status_3)); }
+        if(status.get(position).equals("executor_send_check")){ holder.status.setText(context.getResources().getString(R.string.status_4)); }
+        if(status.get(position).equals("autor_win_check")){ holder.status.setText(context.getResources().getString(R.string.status_5)); }
+        if(status.get(position).equals("end")){ holder.status.setText(context.getResources().getString(R.string.status_6)); }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,11 +81,14 @@ public class HelperAdapter extends RecyclerView.Adapter< HelperAdapter.MyViewCla
         TextView name;
         TextView info;
         TextView xp;
+        TextView status;
         public MyViewClass(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.name);
             info = itemView.findViewById(R.id.info);
             xp = itemView.findViewById(R.id.xp);
+            status = itemView.findViewById(R.id.statusText);
+
         }
     }
 }

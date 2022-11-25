@@ -38,6 +38,7 @@ public class LoginUnesellAccount extends AppCompatActivity {
         email = findViewById(R.id.email_input);
         password = findViewById(R.id.password_input);
 
+
         //String text = textInputLayout.getEditText().getText();
     }
 

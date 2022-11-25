@@ -1,30 +1,13 @@
 <resources>
     <string name="app_name">LiPari</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
-
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="action_settings">Настройки</string>
+    <string name="OK">Понятно</string>
     <string name="new_pari">Новое пари</string>
     <string name="all">Все</string>
     <string name="my_pari">Мои пари</string>
     <string name="title_activity_details_pari">DetailsPari</string>
-    <string name="large_text">
-        "Material is the metaphor.\n\n"
-    </string>
-    <string name="connect_pari">Присоединиться</string>
+    <string name="connect_pari">Принять участие</string>
     <string name="title_activity_login_unesell_account">LoginUnesellAccount</string>
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="invalid_username">Not a valid username</string>
-    <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">"Login failed"</string>
     <string name="email">Электронная почта</string>
     <string name="password">Пароль</string>
     <string name="login_to_account">Войти в аккаунт</string>
@@ -46,5 +29,48 @@
     <string name="challenged">Бросил вызов</string>
     <string name="acceptedChellenge">Принял вызов</string>
     <string name="zero_autor">Вызов никто не бросил</string>
-    <string name="zero_executor">Вызов никто не бросил</string>
+    <string name="zero_executor">Вызов никто не принял</string>
+    <string name="new_pari_text">Создание нового пари</string>
+    <string name="text_reg_informacion">Редактор информации</string>
+    <string name="pari_text_1">Заголовок пари</string>
+    <string name="hint_post_1">Оппонент обязан сделать</string>
+    <string name="text_post_2">В случае выполнения пари</string>
+    <string name="hint_post_2">Инициатор должен</string>
+    <string name="text_post_3">В случае поражения</string>
+    <string name="hint_post_3">Оппонент должен</string>
+    <string name="text_post_4">Сортировка по полу исполнителя</string>
+    <string name="text_post_5">Подробное описание пари</string>
+    <string name="text_post_sub_5">Расспишите подробно, что должен будет сделать исполнитель принявши ваш вызов.</string>
+    <string name="hint_post_5">Напишите, что нужно сделать в пари</string>
+    <string name="text_post_6">Выберите настройки пари, которые будут влиять на заинтересованость пользователей.</string>
+    <string name="expirience">Колличесвто опыта</string>
+    <string name="create_pari">Создать пари</string>
+    <string name="text_post_7">Пари доступно для всех</string>
+    <string name="server_connect">Связываемся с сервером</string>
+    <string name="error_text_length">Заполните все текстовые поля, для продолжения</string>
+    <string name="ban_create">Вы не можете создать пари</string>
+    <string name="ban_create_sub">У вас есть задолженность по активному пари, проверьте его, после чего вы сможете снова будете свободны.</string>
+    <string name="init">Инициатор</string>
+    <string name="join_init">Бросить вызов</string>
+    <string name="opponent">Исполнитель</string>
+    <string name="opponent_join">Принять пари</string>
+
+    <string name="status_1">Поиск учасников</string>
+    <string name="status_2">Пари на исполнении</string>
+    <string name="status_3">Пари провалено. Ждём проверку.</string>
+    <string name="status_4">Проверка наказания</string>
+    <string name="status_5">Пари выполненно. Ждём проверку.</string>
+    <string name="status_6">Пари завершено</string>
+    <string name="load_info">Загрузка информации...</string>
+    <string name="comments">Комментарии</string>
+    <string name="no_comments">Комментариев пока нет</string>
+    <string name="you_comment">Ваш комментарий</string>
+    <string name="you_comment_send">Комментарий отправлен</string>
+
+    <string-array name="sex">
+        <item>Все пользователи</item>
+        <item>Только мужчины</item>
+        <item>Только женщины</item>
+    </string-array>
+
 </resources>
