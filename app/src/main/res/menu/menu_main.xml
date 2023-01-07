@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.unesell.lipari.MainActivity">
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/main"
+        android:contentDescription="Профиль и настройки"
+        android:icon="@drawable/menu"
+        android:title="Меню"
+        app:showAsAction="ifRoom" />
+
 </menu>

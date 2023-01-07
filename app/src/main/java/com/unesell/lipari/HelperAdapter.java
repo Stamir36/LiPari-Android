@@ -5,19 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.app.Activity;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.app.Fragment;
-import android.app.Activity;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

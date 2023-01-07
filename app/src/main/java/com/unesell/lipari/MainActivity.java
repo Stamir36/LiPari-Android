@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.content.Intent;
 
+import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -126,6 +127,20 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            BottomAppBar bottomAppBar = (BottomAppBar) findViewById(R.id.bottomAppBar);
+            bottomAppBar.setOnMenuItemClickListener(new androidx.appcompat.widget.Toolbar.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    switch (item.getItemId()) {
+                        case R.id.main:
+                            // Вызов меню
+                            ModalSheatOpen OpenLogin = ModalSheatOpen.newInstance();
+                            OpenLogin.show(getSupportFragmentManager(), "open_login");
+                            break;
+                    }
+                    return false;
+                }
+            });
             loadJSONFromURL(JSON_URL);
 
             UpdateData();
@@ -240,21 +255,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void clearRecurseViev(){
         name.clear(); info.clear(); xp.clear(); ID.clear(); status.clear();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 
 }

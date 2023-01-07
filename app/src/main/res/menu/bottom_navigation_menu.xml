@@ -3,11 +3,16 @@
     <item
         android:id="@+id/page_1"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_help"
+        android:icon="@drawable/info"
         android:title="@string/menu_information" />
     <item
         android:id="@+id/page_2"
         android:enabled="true"
-        android:icon="@android:drawable/ic_menu_edit"
+        android:icon="@drawable/comments"
         android:title="@string/menu_comments" />
+    <item
+        android:id="@+id/page_3"
+        android:enabled="true"
+        android:icon="@drawable/social"
+        android:title="@string/menu_social" />
 </menu>

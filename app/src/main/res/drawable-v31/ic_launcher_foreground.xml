@@ -9,7 +9,7 @@
         android:translateY="30.361225">
         <path
             android:pathData="M33.4,30.3c-8,16 -12.5,26 -12.1,27 0.5,1.5 2.4,1.7 12.1,1.7l11.5,-0 0.3,15.7c0.3,15.5 0.3,15.8 2.5,16.1 2,0.3 3.6,-2.4 14.9,-25.1 8,-16 12.5,-26 12.1,-27 -0.5,-1.5 -2.4,-1.7 -12.1,-1.7l-11.5,-0 -0.3,-15.8c-0.3,-15.4 -0.3,-15.7 -2.5,-16 -2,-0.3 -3.6,2.4 -14.9,25.1z"
-            android:fillColor="@color/launcher_foreground_android_color"
+            android:fillColor="@android:color/system_neutral1_800"
             android:strokeColor="#00000000"/>
     </group>
 </vector>

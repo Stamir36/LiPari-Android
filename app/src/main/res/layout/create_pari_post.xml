@@ -69,34 +69,68 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="25dp"
+            android:paddingLeft="20dp"
             android:paddingTop="10dp"
-            android:paddingRight="25dp">
+            android:paddingRight="20dp">
 
-            <TextView
-                android:id="@+id/textView8"
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/pari_text_1" />
+                android:layout_height="match_parent"
+                android:checkable="false"
+                android:clickable="false"
+                android:focusable="false"
+                android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/Post_Name"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_post_1" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textView8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/pari_text_1" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/Post_Name"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_post_1" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
+
+        <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewElevatedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:checkable="false"
+            android:clickable="false"
+            android:focusable="false"
+            android:theme="@style/Theme.Material3.DynamicColors.DayNight">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/textView10"
@@ -119,89 +153,144 @@
                     android:hint="@string/hint_post_2" />
             </com.google.android.material.textfield.TextInputLayout>
 
+        </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-            <TextView
-                android:id="@+id/textView12"
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_post_3" />
+                android:layout_height="match_parent"
+                android:checkable="false"
+                android:clickable="false"
+                android:focusable="false"
+                android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/Post_Opponent"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_post_3" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textView12"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_post_3" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/Post_Opponent"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="@string/hint_post_3" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="25dp" />
 
-            <TextView
-                android:id="@+id/textView14"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_post_4" />
-
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
-
             <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:checkable="false"
+                android:clickable="false"
+                android:focusable="false"
+                android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
-                <Spinner
-                    android:id="@+id/spinner"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:minHeight="48dp"
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_post_4" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Spinner
+                            android:id="@+id/spinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:minHeight="48dp"
+                            tools:ignore="SpeakableTextPresentCheck" />
+                    </com.google.android.material.card.MaterialCardView>
+                </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="20dp" />
 
-            <TextView
-                android:id="@+id/textView15"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_post_5"
-                android:textSize="16sp"
-                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/textView16"
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewElevatedStyle"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/text_post_sub_5" />
+                android:layout_height="match_parent"
+                android:checkable="false"
+                android:clickable="false"
+                android:focusable="false"
+                android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
-            <Space
-                android:layout_width="match_parent"
-                android:layout_height="5dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/Post_Info"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.textfield.TextInputEditText
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="148dp"
-                    android:hint="@string/hint_post_5" />
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10dp">
+                    <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_post_5"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView16"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/text_post_sub_5" />
+
+                    <Space
+                        android:layout_width="match_parent"
+                        android:layout_height="5dp" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/Post_Info"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="148dp"
+                            android:hint="@string/hint_post_5" />
+                    </com.google.android.material.textfield.TextInputLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
 
             <Space
                 android:layout_width="match_parent"
@@ -343,10 +432,10 @@
                     android:id="@+id/create"
                     android:layout_width="168dp"
                     android:layout_height="wrap_content"
+                    android:onClick="CreatePari"
                     android:text="@string/create_pari"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:onClick="CreatePari"/>
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Space

@@ -37,6 +37,8 @@ android {
 
 dependencies {
     implementation 'com.android.volley:volley:1.2.1'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
+    implementation 'cz.msebera.android:httpclient:4.4.1.2'
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'de.hdodenhof:circleimageview:3.1.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'

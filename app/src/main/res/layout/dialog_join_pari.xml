@@ -144,6 +144,13 @@
         </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="15dp"
+        android:text="@string/join_pari_disclaimer" />
+
     <Space
         android:layout_width="match_parent"
         android:layout_height="16dp" />

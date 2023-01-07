@@ -10,23 +10,18 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.card.MaterialCardView;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.view.View;
@@ -50,7 +45,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Locale;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -60,8 +54,8 @@ public class DetailsPari extends AppCompatActivity {
     String APIuri = "https://unesell.com/api/lipari/info.pari.php?id=";
 
     SharedPreferences sPref;
-    TextView pari_name; TextView UserName_One;
-    TextView pari_info; TextView UserName_Two;
+    TextView pari_name; TextView UserName_One; TextView voiting_user_one;
+    TextView pari_info; TextView UserName_Two; TextView voiting_user_two;
     TextView pari_win; TextView status;
     TextView pari_lose; TextView nocomm;
     TextView xp; ScrollView Information;
@@ -69,6 +63,9 @@ public class DetailsPari extends AppCompatActivity {
     Context context;
     ExtendedFloatingActionButton fab;
     ConstraintLayout commentsViev;
+    ConstraintLayout Social;
+    MaterialCardView controlcard;
+    MaterialCardView pari_card_files;
 
     RecyclerView recurceComments;
     ArrayList<String> name = new ArrayList<>();
@@ -76,6 +73,10 @@ public class DetailsPari extends AppCompatActivity {
     ArrayList<String> avatar = new ArrayList<>();
     ArrayList<String> date = new ArrayList<>();
     Boolean fabVisible = true;
+
+    // File See
+    RecyclerView fileView;
+    ArrayList<String> namefile = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,14 +98,24 @@ public class DetailsPari extends AppCompatActivity {
         nocomm = (TextView) findViewById(R.id.nocomm);
         UserName_One = (TextView) findViewById(R.id.UserName_One);
         UserName_Two = (TextView) findViewById(R.id.UserName_Two);
+        voiting_user_one = (TextView) findViewById(R.id.voiting_user_one);
+        voiting_user_two = (TextView) findViewById(R.id.voiting_user_two);
         status = (TextView) findViewById(R.id.status);
 
         recurceComments = (RecyclerView) findViewById(R.id.recurceComments);
+        fileView = (RecyclerView) findViewById(R.id.fileView2);
+        LinearLayoutManager filesMeneger = new LinearLayoutManager(getApplicationContext());
+        fileView.setLayoutManager(filesMeneger);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recurceComments.setLayoutManager(linearLayoutManager);
 
         commentsViev = (ConstraintLayout) findViewById(R.id.commentsViev);
+        Social = (ConstraintLayout) findViewById(R.id.S_SEND);
+        controlcard = (MaterialCardView) findViewById(R.id.controlcard);
+        pari_card_files = (MaterialCardView) findViewById(R.id.pari_card_files); pari_card_files.setVisibility(View.GONE);
         // Logic pari activity (pari_id)
+
+        controlcard.setVisibility(View.GONE);
         Bundle arguments = getIntent().getExtras();
         ID = arguments.get("pari_id").toString();
         infoPari();
@@ -119,7 +130,10 @@ public class DetailsPari extends AppCompatActivity {
                 if (id == R.id.page_1) {
                     Information.setVisibility(View.VISIBLE);
                     commentsViev.setVisibility(View.GONE);
+                    Social.setVisibility(View.GONE);
 
+                    // Вкладка - информация.
+                    fab.setVisibility(View.GONE);
                     if(fabVisible){
                         fab.setVisibility(View.VISIBLE);
                     }
@@ -129,17 +143,29 @@ public class DetailsPari extends AppCompatActivity {
                     fab.setVisibility(View.GONE);
                     Information.setVisibility(View.GONE);
                     nocomm.setVisibility(View.GONE);
+                    Social.setVisibility(View.GONE);
                     commentsViev.setVisibility(View.VISIBLE);
-                    //CommentsAdapter
+
+                    // Вкладка - комментарии.
                     clearRecurseViev();
                     loadJSONComments("https://unesell.com/api/lipari/comments.pari.php?id=" + ID);
+                    return true;
+                }
+                if (id == R.id.page_3) {
+                    fab.setVisibility(View.GONE);
+                    Information.setVisibility(View.GONE);
+                    nocomm.setVisibility(View.GONE);
+                    commentsViev.setVisibility(View.GONE);
+                    Social.setVisibility(View.VISIBLE);
+
+                    // Вкладка - социальное.
+
                     return true;
                 }
 
                 return true; // return true;
             }
         });
-
     }
 
     private void  loadJSONComments(String url){
@@ -281,6 +307,11 @@ public class DetailsPari extends AppCompatActivity {
                             String autor_id = jsonObject.getString("autor_id");
                             String executor_id = jsonObject.getString("executor_id");
 
+                            int autor_voting = Integer.parseInt(jsonObject.getString("autor_voting"));
+                            int executor_voting = Integer.parseInt(jsonObject.getString("executor_voting"));
+
+                            int allVoite = autor_voting + executor_voting;
+
                             // Output info in app
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -290,16 +321,30 @@ public class DetailsPari extends AppCompatActivity {
                                     pari_win.setText(win);
                                     pari_lose.setText(lost);
                                     xp.setText(expiriens + " XP");
+                                    TextView voitingAutor = (TextView) findViewById(R.id.voitingAutor);
+                                    voitingAutor.setText(getResources().getString(R.string.voitCount) + ": " + autor_voting);
+                                    TextView voitingExecutor = (TextView) findViewById(R.id.voitingExecutor);
+                                    voitingExecutor.setText(getResources().getString(R.string.voitCount) + ": " + executor_voting);
+
 
                                     if(stasusPari.equals("search")){ status.setText(getResources().getString(R.string.status_1)); }
                                     if(stasusPari.equals("go")){ status.setText(getResources().getString(R.string.status_2)); }
                                     if(stasusPari.equals("executor_lose")){ status.setText(getResources().getString(R.string.status_3)); }
                                     if(stasusPari.equals("executor_send_check")){ status.setText(getResources().getString(R.string.status_4)); }
                                     if(stasusPari.equals("autor_win_check")){ status.setText(getResources().getString(R.string.status_5)); }
-                                    if(stasusPari.equals("end")){ status.setText(getResources().getString(R.string.status_6)); }
+                                    if(stasusPari.equals("end")){
+                                        status.setText(getResources().getString(R.string.status_6));
+                                        pari_card_files.setVisibility(View.VISIBLE);
+                                        loadJSONFromURL("https://unesell.com/api/lipari/files.pari.php?id=" + ID);
+                                    }
 
                                     ImageView avatarOne = (ImageView) findViewById(R.id.UserPari_One);
                                     ImageView avatarTwo = (ImageView) findViewById(R.id.UserPari_Two);
+
+                                    ProgressBar pVoitingAutor = (ProgressBar) findViewById(R.id.progressBar2);
+                                    pVoitingAutor.setMax(allVoite); pVoitingAutor.setProgress(autor_voting);
+                                    ProgressBar pVoitingExecutor = (ProgressBar) findViewById(R.id.progressBar3);
+                                    pVoitingExecutor.setMax(allVoite); pVoitingExecutor.setProgress(executor_voting);
 
                                     if(Integer.parseInt(autor_id) != 0){
                                         Picasso.get().load("https://unesell.com/data/users/avatar/" + autor_id + ".png").into(avatarOne);
@@ -320,10 +365,57 @@ public class DetailsPari extends AppCompatActivity {
 
                                     }
                                     if( autor_id.equals(sPref.getString("ID", "")) || executor_id.equals(sPref.getString("ID", ""))){
+                                        // Social Card Settings
+                                        controlcard.setVisibility(View.VISIBLE);
+                                        ConstraintLayout waiting = (ConstraintLayout) findViewById(R.id.waiting);
+                                        Button cursus = (Button) findViewById(R.id.cursus);
+                                        Button send_win = (Button) findViewById(R.id.send_win);
+                                        Button send_lose = (Button) findViewById(R.id.send_lose);
+                                        Button send_lose2 = (Button) findViewById(R.id.send_lose2);
+                                        Button check_ansver = (Button) findViewById(R.id.check_ansver);
+                                        send_win.setVisibility(View.GONE);
+                                        send_lose.setVisibility(View.GONE);
+                                        send_lose2.setVisibility(View.GONE);
+                                        check_ansver.setVisibility(View.GONE);
+
+                                        if (Integer.parseInt(autor_id) == 0 || Integer.parseInt(executor_id) == 0){
+                                            // Пари не началось.
+                                            waiting.setVisibility(View.VISIBLE);
+                                            cursus.setVisibility(View.GONE);
+                                        }else{
+                                            // Пари началось.
+                                            waiting.setVisibility(View.GONE);
+                                            cursus.setVisibility(View.VISIBLE);
+
+                                            // Если мы автор.
+                                            if(Integer.parseInt(autor_id) == Integer.parseInt(sPref.getString("ID", ""))){
+                                                if(stasusPari.equals("autor_win_check")){
+                                                    check_ansver.setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                            // Если мы оппонент.
+                                            if(Integer.parseInt(executor_id) == Integer.parseInt(sPref.getString("ID", ""))){
+                                                if(stasusPari.equals("go")){
+                                                    send_win.setVisibility(View.VISIBLE);
+                                                    send_lose.setVisibility(View.VISIBLE);
+                                                }
+                                                if(stasusPari.equals("executor_lose")){
+                                                    send_lose2.setVisibility(View.VISIBLE);
+                                                }
+                                            }
+                                        }
+
+                                        // Fab settings
                                         fab.setVisibility(View.GONE);
                                         fabVisible = false;
                                     }
                                     users_name_pari(autor_id, executor_id);
+
+                                    fab.setVisibility(View.GONE);
+                                    if(fabVisible){
+                                        fab.setVisibility(View.VISIBLE);
+                                    }
+
                                     SettingsFab(autor_id, executor_id);
                                 }
                             });
@@ -371,14 +463,23 @@ public class DetailsPari extends AppCompatActivity {
                                 public void run() {
                                     if(autor_name == null || autor_name == "null"){
                                         UserName_One.setText(getResources().getString(R.string.zero_autor));
+                                        voiting_user_one.setText(getResources().getString(R.string.zero_autor));
                                     }else{
                                         UserName_One.setText(autor_name);
+                                        voiting_user_one.setText(autor_name);
                                     }
 
                                     if(executor_name == null || executor_name == "null"){
                                         UserName_Two.setText(getResources().getString(R.string.zero_executor));
+                                        voiting_user_two.setText(getResources().getString(R.string.zero_executor));
                                     }else{
                                         UserName_Two.setText(executor_name);
+                                        voiting_user_two.setText(executor_name);
+                                    }
+
+                                    fab.setVisibility(View.GONE);
+                                    if(fabVisible){
+                                        fab.setVisibility(View.VISIBLE);
                                     }
                                 }
                             });
@@ -481,4 +582,103 @@ public class DetailsPari extends AppCompatActivity {
             }).start();
         }
     }
+
+    public void openPariBrowser(View view) {
+        String url = "https://unesell.com/app/lipari/info/?id=" + ID;
+        Intent openPage= new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url));
+        startActivity(openPage);
+    }
+
+    public void SendExe(View view) {
+        // Запуск активити подтверждения
+        Intent intent = new Intent(context, CheckPari.class);
+        intent.putExtra("pari_id", ID);
+        context.startActivity(intent);
+        finish();
+    }
+
+    public void SendExeLose(View view) {
+        MaterialAlertDialogBuilder mDialogBuilder = new MaterialAlertDialogBuilder(this);
+        mDialogBuilder.setTitle(getResources().getString(R.string.LoseTitle));
+        mDialogBuilder.setMessage(getResources().getString(R.string.LoseSubTitle));
+        mDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(getResources().getString(R.string.OkLoseExecute),
+                        new android.content.DialogInterface.OnClickListener() {
+                            public void onClick(android.content.DialogInterface dialog,int id) {
+                                // Отправка команды поражения.
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        URL url;
+                                        HttpsURLConnection connection = null;
+                                        try {
+                                            url = new URL("https://unesell.com/api/lipari/punishment.php?id_user=" + sPref.getString("ID", "") + "&id_post=" + ID);
+                                            connection = (HttpsURLConnection) url.openConnection();
+                                            connection.getResponseCode();
+
+                                            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Intent intent = new Intent(context, DetailsPari.class);
+                                                        intent.putExtra("pari_id", ID);
+                                                        context.startActivity(intent);
+                                                        finish();
+                                                    }
+                                                });
+                                            } else {
+                                                Toast.makeText(context, "Ошибка обратобки", Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (IOException e) {
+                                            Toast.makeText(context, "Ошибка обратобки", Toast.LENGTH_SHORT).show();
+                                        } finally {
+                                            if (connection != null) {
+                                                connection.disconnect();
+                                            }
+                                        }
+                                    }
+                                }).start();
+                            }
+                        })
+                .setNegativeButton(getResources().getString(R.string.Cansel),
+                        new android.content.DialogInterface.OnClickListener() {
+                            public void onClick(android.content.DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        mDialogBuilder.show();
+    }
+
+    // File see
+    private void  loadJSONFromURL(String url){
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener< String>(){
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONArray jsonArray = jsonObject.getJSONArray("files");
+                            for (int i=0;i< jsonArray.length();i++){
+                                JSONObject userData=jsonArray.getJSONObject(i);
+                                namefile.add(userData.getString("name"));
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        FileAdapter fileAdapter = new FileAdapter(namefile, DetailsPari.this, ID);
+                        fileView.setAdapter(fileAdapter);
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+    }
+    // END LOAD FILE SEE
 }
