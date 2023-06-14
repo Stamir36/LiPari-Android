@@ -6,6 +6,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputLayout;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.widget.Toast;
 
 import android.content.SharedPreferences;
@@ -114,5 +115,10 @@ public class LoginUnesellAccount extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+
+    public void WebReg(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://unesell.com/registration/"));
+        startActivity(intent);
     }
 }

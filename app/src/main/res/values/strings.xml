@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">LiPari</string>
+    <string name="default_web_client_id">786154684558-9hmlps6ckjf98c83ge0flg0fo7mn1apm.apps.googleusercontent.com</string>
     <string name="action_settings">Настройки</string>
     <string name="OK">Понятно</string>
     <string name="new_pari">Новое пари</string>
@@ -16,7 +17,7 @@
     <string name="connect_error">"Ошибка подключения. Проверьте интернет."</string>
     <string name="host_error">"Ошибка хоста. Очень много запросов."</string>
     <string name="welcome">Добро пожаловать</string>
-    <string name="auth_text">Авторизация в Unesell Account</string>
+    <string name="auth_text">Вход через аккаунт Unesell</string>
     <string name="reg_text">Регистрация</string>
     <string name="user_text">Пользователь</string>
     <string name="active_pari">Активные пари</string>
@@ -93,6 +94,8 @@
     <string name="LoseSubTitle">Вы собираетесь принять поражение.\n\nЭто означает, что ваш аккаунт переходит в режим "Наказание", и вы обязаны выполнить условия поражения в споре. Пока этого не произойдёт, вы не сможете начинать или присоединяться к другим пари.</string>
     <string name="OkLoseExecute">Да, принять поражение</string>
     <string name="Cansel">Отменить</string>
+    <string name="thanks">Спасибо!</string>
+    <string name="succses_exit">Вы вышли из аккаунта</string>
     <string name="executor_lose_buttom">Отправить подтверждение выполненного наказания</string>
     <string name="evidence_text">Доказательства</string>
     <string name="evidence_subtext">Напишите то, что указано в условиях, или любое другое сообщение преднозначенное для инициатора.</string>
@@ -117,7 +120,33 @@
     <string name="close_gallary">Закрыть просмотр</string>
     <string name="youprofile">Ваш профиль</string>
     <string name="level">Уровень</string>
-
+    <string name="account_exit">Выйти из аккаунта</string>
+    <string name="menu_ad">Получить монету за рекламу</string>
+    <string name="exitAccount_text_1">Выйти из аккаунта?</string>
+    <string name="exitAccount_text_2">После этого вам нужно будет заново авторизоваться в приложении для доступа к пари и своему аккаунту.</string>
+    <string name="exitAccount_text_3">Да, выйти</string>
+    <string name="menu_add_money">Заработать монеты</string>
+    <string name="m_title">Заработать монету</string>
+    <string name="m_sub">Посмотрите короткий ролик, и получите 1 монету на свой счёт аккаунта.</string>
+    <string name="error_load_ad">Не удалось загрузить рекламу, попробуйте позже.</string>
+    <string name="ad_ok_title">Вознаграждение получено</string>
+    <string name="ad_ok_sub">Отлично, на ваш счёт зачислена 1 монета!</string>
+    <string name="todo">TODO</string>
+    <string name="profile">Профиль</string>
+    <string name="about_me">Про меня</string>
+    <string name="Auth_title">Создавай, принимай, играй.</string>
+    <string name="Auth_subTitle">Система проведения пари не имеющая аналогов. Социальная сеть для всех и каждого.</string>
+    <string name="google_singin">Вход через аккаунт Google</string>
+    <string name="welcome_modal_title">Прежде чем мы начнём...</string>
+    <string name="welcome_modal_sutitle">Привет, добро пожаловать на Lipari. Это место, где ты можешь бросать вызов своим друзьям или случайным людям из интернета. Выбери готовое пари, или создай своё. Мы даём тебе 500XP для старта. Но, сначала, укажи свой пол. \n\nУдачи!</string>
+    <string name="man">Я парень</string>
+    <string name="woomen">Я девушка</string>
+    <string name="regdate">С нами от:</string>
+    <string name="messanger_txt">Сообщения</string>
+    <string name="assets_store_txt">Магазин ассетов</string>
+    <string name="lipari_by_unesell_studio">LiPari | by Unesell Studio</string>
+    <string name="Menu_txt">Меню</string>
+    <string name="reward_txt">Достижения</string>
 
     <string-array name="sex">
         <item>Все пользователи</item>

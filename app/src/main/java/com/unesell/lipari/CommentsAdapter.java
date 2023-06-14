@@ -55,7 +55,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.MyView
         Picasso.get().load("https://unesell.com/data/users/avatar/" + avatar.get(position) + ".png").into(holder.avatars);
     }
 
-
     @Override
     public int getItemCount() {
         return name.size();

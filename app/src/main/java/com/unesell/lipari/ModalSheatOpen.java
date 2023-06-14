@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.view.ViewGroup.LayoutParams;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.NonNull;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.card.MaterialCardView;
@@ -37,6 +38,9 @@ public class ModalSheatOpen extends BottomSheetDialogFragment {
     TextView UserNameAccount; MaterialCardView card_money;
     TextView menu_xp; TextView level_text;
     TextView money; ProgressBar progressBar5;
+    View view; ImageView UserAvatar;
+
+    Boolean go = true;
 
     public static ModalSheatOpen newInstance() {
         return new ModalSheatOpen();
@@ -45,9 +49,8 @@ public class ModalSheatOpen extends BottomSheetDialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.main_menu, container, false);
+        view = inflater.inflate(R.layout.main_menu, container, false);
 
-        final ImageView UserAvatar = view.findViewById(R.id.UserAvatar);
         final MaterialCardView accountcard = view.findViewById(R.id.accountcard);
         UserNameAccount = view.findViewById(R.id.UserNameAccount);
         menu_xp = view.findViewById(R.id.menu_xp);
@@ -55,12 +58,72 @@ public class ModalSheatOpen extends BottomSheetDialogFragment {
         level_text = view.findViewById(R.id.level_text);
         card_money = (MaterialCardView) view.findViewById(R.id.card_money);
         progressBar5 = (ProgressBar) view.findViewById(R.id.progressBar5);
-
+        UserAvatar = view.findViewById(R.id.UserAvatar);
         sPref = view.getContext().getSharedPreferences("Account", view.getContext().MODE_PRIVATE);
         String ID = sPref.getString("ID", "");
-        Picasso.get().load("https://unesell.com/data/users/avatar/" + ID + ".png").into(UserAvatar);
-
+        String avatar_id = sPref.getString("avatar_id", "");
+        Picasso.get().load("https://unesell.com/data/users/avatar/" + avatar_id).into(UserAvatar);
         UpdateData();
+
+        Button acc_exit = (Button) view.findViewById(R.id.acc_exit);
+        Button moneyAdButtom = (Button) view.findViewById(R.id.moneyAdButtom);
+
+        MaterialAlertDialogBuilder mDialogBuilder = new MaterialAlertDialogBuilder(view.getContext());
+        mDialogBuilder.setTitle(getResources().getString(R.string.exitAccount_text_1));
+        mDialogBuilder.setMessage(getResources().getString(R.string.exitAccount_text_2));
+        acc_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View views) {
+                mDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton(getResources().getString(R.string.exitAccount_text_3),
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+
+                                        sPref = view.getContext().getSharedPreferences("Account", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor ed = sPref.edit();
+
+                                        ed.putString("ID", "");
+                                        ed.commit();
+
+                                        Toast.makeText(view.getContext(),getResources().getString(R.string.succses_exit), Toast.LENGTH_SHORT).show();
+
+                                        Intent intent = new Intent(view.getContext(), MainActivity.class);
+                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                        startActivity(intent);
+
+                                        dialog.cancel();
+                                    }
+                                })
+                        .setNegativeButton(getResources().getString(R.string.Cansel),
+                                new android.content.DialogInterface.OnClickListener() {
+                                    public void onClick(android.content.DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                mDialogBuilder.show();
+
+            }
+        });
+
+        moneyAdButtom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View views) {
+                Intent intent = new Intent(view.getContext(), RewardActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        accountcard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View views) {
+                Intent intent = new Intent(view.getContext(), Profile.class);
+                intent.putExtra("user_ui", ID); intent.putExtra("noDestroy", "no");
+                view.getContext().startActivity(intent);
+            }
+        });
+
         return view;
     }
 
@@ -85,6 +148,7 @@ public class ModalSheatOpen extends BottomSheetDialogFragment {
                             String nameAccount = jsonObject.getString("name");
                             String xp_now = jsonObject.getString("xp_now");
                             String money_json = jsonObject.getString("money");
+                            String avatar_u = jsonObject.getString("avatar");
 
                             UserNameAccount.setText(nameAccount);
                             menu_xp.setText(xp_now + " XP");
@@ -92,21 +156,18 @@ public class ModalSheatOpen extends BottomSheetDialogFragment {
 
                             progressBar5.setMax(1000); progressBar5.setProgress(Integer.parseInt( xp_now.substring(xp_now.length() - 3, xp_now.length()) ));
                             String level = xp_now.substring(0, xp_now.length() - 3);
-
+                            if (level.length() == 0){ level = "0"; }
                             level_text.setText(getResources().getString(R.string.level) + ": " + level);
-
-                            card_money.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                            menu_xp.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                            go = false;
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    UpdateData();
-                }finally {
-                    card_money.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-                    menu_xp.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+                    if (go){
+                        UpdateData();
+                    }
                 }
             }
         }).start();

@@ -3,10 +3,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.unesell.lipari.MainActivity">
     <item
-        android:id="@+id/main"
-        android:contentDescription="Профиль и настройки"
-        android:icon="@drawable/menu"
-        android:title="Меню"
+        android:id="@+id/nav_open"
+        android:contentDescription="@string/Menu_txt"
+        app:iconTint="?attr/colorControlNormal"
+        android:icon="@drawable/menu_dot"
+        android:title="@string/Menu_txt"
         app:showAsAction="ifRoom" />
-
+    <item
+        android:id="@+id/main"
+        android:contentDescription="@string/youprofile"
+        app:iconTint="?attr/colorControlNormal"
+        android:icon="@drawable/profile_user"
+        android:title="@string/youprofile"
+        app:showAsAction="ifRoom" />
 </menu>

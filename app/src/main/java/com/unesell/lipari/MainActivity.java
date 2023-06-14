@@ -1,5 +1,6 @@
 package com.unesell.lipari;
 
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,17 +10,25 @@ import android.content.Intent;
 
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.color.DynamicColors;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+
+import androidx.core.view.GravityCompat;
 import androidx.core.view.WindowCompat;
 
 import androidx.appcompat.content.res.AppCompatResources;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.fragment.app.FragmentManager;
 import com.unesell.lipari.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +36,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.material.chip.Chip;
 import android.content.Context;
+import com.google.android.material.navigation.NavigationView;
 
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -47,6 +58,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
@@ -56,6 +68,10 @@ import java.util.ArrayList;
 import com.squareup.picasso.Picasso;
 
 import javax.net.ssl.HttpsURLConnection;
+
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.initialization.InitializationStatus;
+import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,17 +89,28 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> status = new ArrayList<>();
     ArrayList<String> ID = new ArrayList<>();
     Context context;
-
+    ImageView avatar;
+    NavigationView nav_view;
+    DrawerLayout drawerLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
         context = this;
+        nav_view = (NavigationView) findViewById(R.id.nav_view);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         // Проверка на авторизацию
         sPref = getSharedPreferences("Account", MODE_PRIVATE);
         String ID = sPref.getString("ID", "");
+        avatar = (ImageView) findViewById(R.id.Avatar);
+
+        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+            @Override
+            public void onInitializationComplete(InitializationStatus initializationStatus) {
+            }
+        });
 
         if(ID.equals("null") || ID == ""){
             Intent intent = new Intent(context, SplashScreen.class);
@@ -133,19 +160,22 @@ public class MainActivity extends AppCompatActivity {
                 public boolean onMenuItemClick(MenuItem item) {
                     switch (item.getItemId()) {
                         case R.id.main:
-                            // Вызов меню
+                            // Вызов профиля
                             ModalSheatOpen OpenLogin = ModalSheatOpen.newInstance();
                             OpenLogin.show(getSupportFragmentManager(), "open_login");
+                            break;
+                        case R.id.nav_open:
+                             // Вызов меню
+                            drawerLayout.openDrawer(GravityCompat.START);
                             break;
                     }
                     return false;
                 }
             });
+
             loadJSONFromURL(JSON_URL);
 
             UpdateData();
-            ImageView avatar = (ImageView) findViewById(R.id.Avatar);
-            Picasso.get().load("https://unesell.com/data/users/avatar/" + sPref.getString("ID", "") + ".png").into(avatar);
         }
     }
 
@@ -158,7 +188,7 @@ public class MainActivity extends AppCompatActivity {
                 HttpsURLConnection connection = null;
 
                 try {
-                    url = new URL("https://unesell.com/api/account.info.id.php?id=" + sPref.getString("ID", ""));
+                    url = new URL("https://unesell.com/api/lipari/account.lipari.php?id=" + sPref.getString("ID", ""));
                     connection = (HttpsURLConnection) url.openConnection();
                     connection.getResponseCode();
                     if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -168,12 +198,43 @@ public class MainActivity extends AppCompatActivity {
                             JSONObject jsonObject = new JSONObject(res);
 
                             String nameAccount = jsonObject.getString("name");
+                            String avatar_u = jsonObject.getString("avatar");
+                            String xp_now = jsonObject.getString("xp_now");
 
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     TextView name = (TextView) findViewById(R.id.UserName);
                                     name.setText(nameAccount);
+                                    Picasso.get().load("https://unesell.com/data/users/avatar/" + avatar_u).into(avatar);
+
+                                    SharedPreferences.Editor ed = sPref.edit();
+                                    ed.putString("avatar_id", avatar_u);
+                                    ed.commit();
+
+                                    if(xp_now.isEmpty()){
+                                        MaterialAlertDialogBuilder mDialogBuilder = new MaterialAlertDialogBuilder(context);
+                                        mDialogBuilder.setTitle(getResources().getString(R.string.welcome_modal_title));
+                                        mDialogBuilder.setMessage(getResources().getString(R.string.welcome_modal_sutitle));
+                                        mDialogBuilder
+                                                .setCancelable(false)
+                                                .setPositiveButton(getResources().getString(R.string.man),
+                                                        new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int id) {
+                                                                SexChence("man");
+                                                                dialog.cancel();
+                                                            }
+                                                        })
+                                                .setNegativeButton(getResources().getString(R.string.woomen),
+                                                        new android.content.DialogInterface.OnClickListener() {
+                                                            public void onClick(android.content.DialogInterface dialog,int id) {
+                                                                SexChence("woman");
+                                                                dialog.cancel();
+                                                            }
+                                                        });
+
+                                        mDialogBuilder.show();
+                                    }
                                 }
                             });
 
@@ -187,6 +248,29 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                     UpdateData();
+                }
+            }
+        }).start();
+    }
+
+    public void SexChence(String sex)
+    {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                URL url;
+                HttpsURLConnection connection = null;
+                try {
+                    url = new URL("https://unesell.com/api/lipari/chenge.sex.php?id=" + sPref.getString("ID", "") + "&sex=" + sex);
+                    connection = (HttpsURLConnection) url.openConnection();
+                    connection.getResponseCode();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    if (connection != null) {
+                        connection.disconnect();
+                    }
                 }
             }
         }).start();
@@ -257,4 +341,7 @@ public class MainActivity extends AppCompatActivity {
         name.clear(); info.clear(); xp.clear(); ID.clear(); status.clear();
     }
 
+    public void closeMenu(View view) {
+        nav_view.setVisibility(View.GONE);
+    }
 }

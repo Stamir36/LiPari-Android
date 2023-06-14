@@ -2,6 +2,8 @@ package com.unesell.lipari;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -47,6 +49,8 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import javax.net.ssl.HttpsURLConnection;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 public class DetailsPari extends AppCompatActivity {
 
@@ -66,13 +70,18 @@ public class DetailsPari extends AppCompatActivity {
     ConstraintLayout Social;
     MaterialCardView controlcard;
     MaterialCardView pari_card_files;
+    ImageView mainBackground;
+    MaterialCardView autor_card, executer_card;
 
+    String Cursus = "0";
+    
     RecyclerView recurceComments;
     ArrayList<String> name = new ArrayList<>();
     ArrayList<String> comments = new ArrayList<>();
     ArrayList<String> avatar = new ArrayList<>();
     ArrayList<String> date = new ArrayList<>();
     Boolean fabVisible = true;
+    private AdView mAdView;
 
     // File See
     RecyclerView fileView;
@@ -88,6 +97,11 @@ public class DetailsPari extends AppCompatActivity {
 
         sPref = getSharedPreferences("Account", MODE_PRIVATE);
         fab = binding.fab;
+
+        // ADS
+        mAdView = findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
 
         // Inocialithing
         pari_name = (TextView) findViewById(R.id.pari_name);
@@ -113,6 +127,9 @@ public class DetailsPari extends AppCompatActivity {
         Social = (ConstraintLayout) findViewById(R.id.S_SEND);
         controlcard = (MaterialCardView) findViewById(R.id.controlcard);
         pari_card_files = (MaterialCardView) findViewById(R.id.pari_card_files); pari_card_files.setVisibility(View.GONE);
+        autor_card = (MaterialCardView) findViewById(R.id.autor_card);
+        executer_card = (MaterialCardView) findViewById(R.id.executer_card);
+        mainBackground = (ImageView) findViewById(R.id.mainBackground);
         // Logic pari activity (pari_id)
 
         controlcard.setVisibility(View.GONE);
@@ -254,9 +271,9 @@ public class DetailsPari extends AppCompatActivity {
                 final MaterialCardView JoinOpponent = (MaterialCardView) promptsView.findViewById(R.id.opponentCard);
 
                 if(ID_autor.equals(sPref.getString("ID", ""))){ JoinIniciator.setVisibility(View.GONE); }
-                if(Integer.parseInt(ID_autor) != 0){ JoinIniciator.setVisibility(View.GONE); }
+                if(Long.parseLong(ID_autor) != 0){ JoinIniciator.setVisibility(View.GONE); }
                 if(ID_Executor.equals(sPref.getString("ID", ""))){ JoinOpponent.setVisibility(View.GONE); }
-                if(Integer.parseInt(ID_Executor) != 0){ JoinOpponent.setVisibility(View.GONE); }
+                if(Long.parseLong(ID_Executor) != 0){ JoinOpponent.setVisibility(View.GONE); }
 
                 JoinIniciator.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -303,6 +320,7 @@ public class DetailsPari extends AppCompatActivity {
                             String lost = jsonObject.getString("lost");
                             String expiriens = jsonObject.getString("xp_boost");
                             String stasusPari = jsonObject.getString("stasus");
+                            String backgroundImg = jsonObject.getString("backgroundImg");
 
                             String autor_id = jsonObject.getString("autor_id");
                             String executor_id = jsonObject.getString("executor_id");
@@ -325,7 +343,10 @@ public class DetailsPari extends AppCompatActivity {
                                     voitingAutor.setText(getResources().getString(R.string.voitCount) + ": " + autor_voting);
                                     TextView voitingExecutor = (TextView) findViewById(R.id.voitingExecutor);
                                     voitingExecutor.setText(getResources().getString(R.string.voitCount) + ": " + executor_voting);
-
+                                    if(backgroundImg != "default"){
+                                        Picasso.get().load(backgroundImg).into(mainBackground);
+                                        mainBackground.setColorFilter(Color.argb(128, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+                                    }
 
                                     if(stasusPari.equals("search")){ status.setText(getResources().getString(R.string.status_1)); }
                                     if(stasusPari.equals("go")){ status.setText(getResources().getString(R.string.status_2)); }
@@ -346,25 +367,47 @@ public class DetailsPari extends AppCompatActivity {
                                     ProgressBar pVoitingExecutor = (ProgressBar) findViewById(R.id.progressBar3);
                                     pVoitingExecutor.setMax(allVoite); pVoitingExecutor.setProgress(executor_voting);
 
-                                    if(Integer.parseInt(autor_id) != 0){
+                                    if(Long.parseLong(autor_id) != 0){
                                         Picasso.get().load("https://unesell.com/data/users/avatar/" + autor_id + ".png").into(avatarOne);
+                                        autor_card.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View views) {
+                                                Intent intent = new Intent(context, Profile.class);
+                                                intent.putExtra("user_ui", autor_id); intent.putExtra("noDestroy", "yes");
+                                                context.startActivity(intent);
+                                            }
+                                        });
                                     }else{
                                         Picasso.get().load("https://unesell.com/assets/img/default.png").into(avatarOne);
                                     }
 
-                                    if(Integer.parseInt(executor_id) != 0){
+                                    if(Long.parseLong(executor_id) != 0){
                                         Picasso.get().load("https://unesell.com/data/users/avatar/" + executor_id + ".png").into(avatarTwo);
+                                        executer_card.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View views) {
+                                                Intent intent = new Intent(context, Profile.class);
+                                                intent.putExtra("user_ui", executor_id); intent.putExtra("noDestroy", "yes");
+                                                context.startActivity(intent);
+                                            }
+                                        });
                                     }else{
                                         Picasso.get().load("https://unesell.com/assets/img/default.png").into(avatarTwo);
                                     }
 
-                                    if(Integer.parseInt(executor_id) != 0 && Integer.parseInt(autor_id) != 0){
+                                    if(Long.parseLong(executor_id) != 0 && Long.parseLong(autor_id) != 0){
                                         fab.setVisibility(View.GONE);
                                         fabVisible = false;
                                     }else{
 
                                     }
                                     if( autor_id.equals(sPref.getString("ID", "")) || executor_id.equals(sPref.getString("ID", ""))){
+                                        if(autor_id.equals(sPref.getString("ID", ""))){
+                                            Cursus = autor_id;
+                                        }else {
+                                            Cursus = executor_id;
+                                        }
+
                                         // Social Card Settings
                                         controlcard.setVisibility(View.VISIBLE);
                                         ConstraintLayout waiting = (ConstraintLayout) findViewById(R.id.waiting);
@@ -378,7 +421,7 @@ public class DetailsPari extends AppCompatActivity {
                                         send_lose2.setVisibility(View.GONE);
                                         check_ansver.setVisibility(View.GONE);
 
-                                        if (Integer.parseInt(autor_id) == 0 || Integer.parseInt(executor_id) == 0){
+                                        if (Long.parseLong(autor_id) == 0 || Long.parseLong(executor_id) == 0){
                                             // Пари не началось.
                                             waiting.setVisibility(View.VISIBLE);
                                             cursus.setVisibility(View.GONE);
@@ -388,13 +431,13 @@ public class DetailsPari extends AppCompatActivity {
                                             cursus.setVisibility(View.VISIBLE);
 
                                             // Если мы автор.
-                                            if(Integer.parseInt(autor_id) == Integer.parseInt(sPref.getString("ID", ""))){
+                                            if(Long.parseLong(autor_id) == Long.parseLong(sPref.getString("ID", ""))){
                                                 if(stasusPari.equals("autor_win_check")){
                                                     check_ansver.setVisibility(View.VISIBLE);
                                                 }
                                             }
                                             // Если мы оппонент.
-                                            if(Integer.parseInt(executor_id) == Integer.parseInt(sPref.getString("ID", ""))){
+                                            if(Long.parseLong(executor_id) == Long.parseLong(sPref.getString("ID", ""))){
                                                 if(stasusPari.equals("go")){
                                                     send_win.setVisibility(View.VISIBLE);
                                                     send_lose.setVisibility(View.VISIBLE);
@@ -681,4 +724,15 @@ public class DetailsPari extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
     // END LOAD FILE SEE
+
+    public void CursesGo(View view) {
+        String url = "https://unesell.com/app/cursus/?chat=" + ID;
+        Intent openPage= new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url));
+        startActivity(openPage);
+    }
+
+    public void OpenLiveStream(View view) {
+        Intent intent = new Intent(context, LivePlayer.class);
+        context.startActivity(intent);
+    }
 }

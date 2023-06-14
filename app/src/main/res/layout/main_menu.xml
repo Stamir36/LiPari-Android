@@ -57,7 +57,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="7dp"
                             android:text="@string/youprofile"
                             android:textAppearance="?attr/textAppearanceBodyMedium"
                             android:textColor="?android:attr/textColorSecondary"
@@ -158,6 +158,19 @@
         <Space
             android:layout_width="match_parent"
             android:layout_height="30dp" />
+
+        <Button
+            android:id="@+id/moneyAdButtom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/menu_add_money" />
+
+        <Button
+
+            android:id="@+id/acc_exit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/account_exit" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
