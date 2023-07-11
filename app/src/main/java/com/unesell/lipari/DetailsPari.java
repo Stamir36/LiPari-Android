@@ -64,6 +64,7 @@ public class DetailsPari extends AppCompatActivity {
     TextView pari_lose; TextView nocomm;
     TextView xp; ScrollView Information;
     String ID;
+    String live_stream;
     Context context;
     ExtendedFloatingActionButton fab;
     ConstraintLayout commentsViev;
@@ -321,6 +322,7 @@ public class DetailsPari extends AppCompatActivity {
                             String expiriens = jsonObject.getString("xp_boost");
                             String stasusPari = jsonObject.getString("stasus");
                             String backgroundImg = jsonObject.getString("backgroundImg");
+                            live_stream = jsonObject.getString("live_stream");
 
                             String autor_id = jsonObject.getString("autor_id");
                             String executor_id = jsonObject.getString("executor_id");
@@ -347,7 +349,10 @@ public class DetailsPari extends AppCompatActivity {
                                         Picasso.get().load(backgroundImg).into(mainBackground);
                                         mainBackground.setColorFilter(Color.argb(128, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
                                     }
-
+                                    if(live_stream == "none"){
+                                        Button openStream = findViewById(R.id.openStream);
+                                        openStream.setVisibility(View.GONE);
+                                    }
                                     if(stasusPari.equals("search")){ status.setText(getResources().getString(R.string.status_1)); }
                                     if(stasusPari.equals("go")){ status.setText(getResources().getString(R.string.status_2)); }
                                     if(stasusPari.equals("executor_lose")){ status.setText(getResources().getString(R.string.status_3)); }
@@ -733,6 +738,7 @@ public class DetailsPari extends AppCompatActivity {
 
     public void OpenLiveStream(View view) {
         Intent intent = new Intent(context, LivePlayer.class);
+        intent.putExtra("StreamID", live_stream);
         context.startActivity(intent);
     }
 }

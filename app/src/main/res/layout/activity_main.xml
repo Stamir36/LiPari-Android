@@ -54,7 +54,10 @@
         android:layout_gravity="start"
         android:background="@color/material_dynamic_neutral20"
         android:fitsSystemWindows="true"
-        android:visibility="visible"
-        app:headerLayout="@layout/main_navmenu"/>
+        android:visibility="visible">
+
+    </com.google.android.material.navigation.NavigationView>
+
+
 
 </androidx.drawerlayout.widget.DrawerLayout>

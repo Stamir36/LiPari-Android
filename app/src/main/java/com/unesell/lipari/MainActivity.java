@@ -16,6 +16,8 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.view.LayoutInflater;
 import android.view.View;
 
 import androidx.core.view.GravityCompat;
@@ -100,6 +102,9 @@ public class MainActivity extends AppCompatActivity {
         context = this;
         nav_view = (NavigationView) findViewById(R.id.nav_view);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        nav_view.getMenu().clear();
+        View navContent = LayoutInflater.from(this).inflate(R.layout.main_navmenu, nav_view, false);
+        nav_view.addView(navContent);
 
         // Проверка на авторизацию
         sPref = getSharedPreferences("Account", MODE_PRIVATE);
@@ -344,4 +349,17 @@ public class MainActivity extends AppCompatActivity {
     public void closeMenu(View view) {
         nav_view.setVisibility(View.GONE);
     }
+
+    public void Open_cursus(View view) {
+        String url = "https://unesell.com/app/cursus/";
+        Intent openPage= new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url));
+        startActivity(openPage);
+    }
+
+    public void Open_store(View view) {
+        String url = "https://unesell.com/app/lipari/store/";
+        Intent openPage= new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url));
+        startActivity(openPage);
+    }
+
 }

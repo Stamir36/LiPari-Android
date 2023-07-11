@@ -184,7 +184,6 @@ public class SplashScreen extends AppCompatActivity {
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(context, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                         // Аккаунтов нет. Запуск регистрации в одно касание.
-
                     }
                 });
     }

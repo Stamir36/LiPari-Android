@@ -9,7 +9,7 @@
     android:layout_marginBottom="10dp"
     android:orientation="vertical">
 
-        <LinearLayout
+    <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -38,6 +38,7 @@
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="Open_cursus"
         android:text="@string/messanger_txt"
         android:textSize="16sp"
         app:icon="@drawable/mess" />
@@ -47,8 +48,38 @@
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="Open_store"
         android:text="@string/assets_store_txt"
         android:textSize="16sp"
         app:icon="@drawable/store" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:padding="15dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/textView30"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/lipari_by_unesell_studio"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView31"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_verison_text"
+            android:textSize="14sp" />
+    </LinearLayout>
 
 </LinearLayout>
