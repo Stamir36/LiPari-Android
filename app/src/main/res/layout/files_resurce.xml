@@ -17,6 +17,7 @@
         android:checkable="false"
         android:clickable="true"
         android:focusable="true"
+        android:minHeight="45dp"
         android:theme="@style/Theme.Material3.DynamicColors.DayNight">
 
         <LinearLayout
@@ -25,12 +26,13 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:minHeight="45dp">
 
             <ImageView
                 android:id="@+id/imgFile"
                 android:layout_width="74dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:maxWidth="100dp"
                 android:maxHeight="100dp"
                 tools:srcCompat="@tools:sample/avatars" />
@@ -40,9 +42,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:text="@string/ect"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 

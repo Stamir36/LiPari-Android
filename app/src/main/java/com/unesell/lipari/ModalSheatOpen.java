@@ -63,6 +63,7 @@ public class ModalSheatOpen extends BottomSheetDialogFragment {
         String ID = sPref.getString("ID", "");
         String avatar_id = sPref.getString("avatar_id", "");
         Picasso.get().load("https://unesell.com/data/users/avatar/" + avatar_id).into(UserAvatar);
+        money.setText("~~~~~" + getResources().getString(R.string.money));
         UpdateData();
 
         Button acc_exit = (Button) view.findViewById(R.id.acc_exit);

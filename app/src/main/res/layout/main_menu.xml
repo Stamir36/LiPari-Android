@@ -91,11 +91,14 @@
                 android:paddingTop="15dp"
                 android:text="@string/level" />
 
-            <ProgressBar
+            <com.google.android.material.progressindicator.LinearProgressIndicator
                 android:id="@+id/progressBar5"
-                style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent"
+                app:trackCornerRadius="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                app:trackThickness="8dp"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -130,7 +133,7 @@
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_money"
                     style="?attr/materialCardViewElevatedStyle"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:backgroundTint="?android:attr/colorActivatedHighlight"
@@ -140,11 +143,12 @@
                     <TextView
                         android:id="@+id/money"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="3dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="3dp"
+                        android:gravity="center_horizontal|center_vertical"
                         android:text="@string/load_info"
                         android:textAppearance="?attr/textAppearanceBodyMedium"
                         android:textColor="?attr/colorSurface"

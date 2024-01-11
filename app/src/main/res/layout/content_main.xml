@@ -7,82 +7,212 @@
     android:theme="@style/Theme.Material3.DynamicColors.DayNight"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:layout_marginBottom="25dp"
-        android:text="@string/active_pari"
-        android:textSize="28sp"
-        android:textStyle="normal|bold" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/MainPariCard"
+        style="?attr/materialCardViewElevatedStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="110dp"
-        android:layout_marginBottom="70dp" />
+        android:layout_marginTop="130dp">
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chipGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="60dp">
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip_1"
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="@string/all" />
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_vertical"
+            android:visibility="gone" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip2"
-            style="@style/Widget.Material3.Chip.Filter"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/my_pari" />
+            android:paddingLeft="16dp"
+            android:paddingTop="6dp"
+            android:paddingRight="16dp">
 
-    </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_toStartOf="@id/btnfullscren">
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_1"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="@string/all" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip2"
+                    style="@style/Widget.Material3.Chip.Filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/my_pari" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnfullscren"
+                style="?attr/materialIconButtonFilledTonalStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="8dp"
+                android:contentDescription="@string/OK"
+                android:text=""
+                app:icon="@drawable/fullscreen" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="70dp"
+            android:layout_marginBottom="70dp" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:visibility="gone" />
+        android:orientation="horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/Avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="40dp"
-        android:src="@drawable/account"
-        app:civ_border_color="#2196F3"
-        app:civ_border_width="2dp" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/UserName"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="80dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="40dp"
-        android:gravity="bottom|right"
-        android:text="@string/user_text" />
+            <ImageView
+                android:id="@+id/imageAccountBack"
+                android:layout_width="241dp"
+                android:layout_height="234dp"
+                android:layout_marginTop="-25dp"
+                android:layout_marginEnd="-50dp"
+                android:rotation="30"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="20dp"
+                android:paddingTop="30dp"
+                android:paddingEnd="20dp"
+                android:paddingBottom="30dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/Avatar"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:layout_margin="5dp"
+                    android:src="@drawable/account"
+                    app:civ_border_color="#D9D9D9"
+                    app:civ_border_width="3dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/textHello"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/hello_1"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/UserName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFeatureSettings="pnum, lnum"
+                        android:lineSpacingExtra="-3sp"
+                        android:paddingBottom="3dp"
+                        android:text="@string/user_text"
+                        android:textSize="21sp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:visibility="visible">
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/card_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginBottom="3dp"
+                            android:focusable="true"
+                            android:theme="@style/Theme.Material3.DayNight"
+                            app:cardBackgroundColor="#DFD6C14F">
+
+                            <TextView
+                                android:id="@+id/moneyAccount"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="0dp"
+                                android:text="@string/load_info"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                android:textColor="@color/black"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                tools:ignore="SmallSp" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+                        <com.google.android.material.card.MaterialCardView
+                            android:id="@+id/pro_account_card"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:focusable="true"
+                            android:theme="@style/Theme.Material3.DayNight"
+                            app:cardBackgroundColor="#F2B8B5">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="3dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginBottom="3dp"
+                                android:text="Pro"
+                                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                                android:textColor="@color/black"
+                                android:textSize="10sp"
+                                android:textStyle="bold"
+                                tools:ignore="SmallSp" />
+
+                        </com.google.android.material.card.MaterialCardView>
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

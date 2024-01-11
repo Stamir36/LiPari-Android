@@ -19,7 +19,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:paddingBottom="100dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -44,6 +45,83 @@
                         tools:ignore="HardcodedText" />
 
                 </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/liveplayercard"
+                    style="?attr/materialCardViewElevatedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="15dp"
+                    android:checkable="false"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:theme="@style/Theme.Material3.DynamicColors.DayNight"
+                    android:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:padding="15dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/live_title_txt"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:paddingTop="5dp"
+                                android:text="@string/live_sub_txt"
+                                android:textSize="13sp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1.4"
+                            android:minWidth="400dp"
+                            android:orientation="vertical">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/openStream"
+                                    style="@style/Widget.Material3.Button.TonalButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginEnd="12dp"
+                                    android:gravity="center"
+                                    android:onClick="OpenLiveStream"
+                                    android:text="@string/watch_live"
+                                    app:icon="@android:drawable/ic_media_play"
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+
 
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/autor_card"
@@ -190,7 +268,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="@string/ect"
-                        android:textSize="20sp"
+                        android:textSize="18sp"
                         android:textStyle="bold" />
 
                     <Space
@@ -233,7 +311,7 @@
 
                     <Space
                         android:layout_width="match_parent"
-                        android:layout_height="50dp" />
+                        android:layout_height="20dp" />
 
                     <com.google.android.gms.ads.AdView
                         android:id="@+id/adView"
@@ -246,6 +324,77 @@
                         android:layout_width="match_parent"
                         android:layout_height="10dp" />
                 </LinearLayout>
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/sharecard"
+                    style="?attr/materialCardViewElevatedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:checkable="false"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:theme="@style/Theme.Material3.DynamicColors.DayNight">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/share_txt"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            tools:ignore="HardcodedText,TouchTargetSizeCheck" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="@string/share_sub_text"
+                            android:textSize="13sp" />
+
+                        <Space
+                            android:layout_width="match_parent"
+                            android:layout_height="10dp" />
+
+                        <HorizontalScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:orientation="horizontal">
+
+                                <com.google.android.material.button.MaterialButton
+                                    android:id="@+id/shareButton"
+                                    style="@style/Widget.Material3.Button.TonalButton"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:onClick="CopyLink"
+                                    android:text="@string/copy_link"
+                                    app:icon="@drawable/link" />
+
+                                <com.google.android.material.button.MaterialButton
+                                    style="?attr/materialIconButtonFilledTonalStyle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="5dp"
+                                    android:contentDescription="@string/share_txt"
+                                    android:onClick="ShareLink"
+                                    app:icon="@android:drawable/ic_menu_share" />
+
+                            </LinearLayout>
+                        </HorizontalScrollView>
+
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
             </LinearLayout>
 
@@ -335,17 +484,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-
-        <Button
-            android:id="@+id/openStream"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:onClick="OpenLiveStream"
-            android:text="Прямая трансляция"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/nocomm"
@@ -504,15 +642,17 @@
                                 app:layout_constraintTop_toTopOf="parent" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ProgressBar
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/progressBar2"
-                            style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            app:trackCornerRadius="8dp"
+                            app:trackThickness="7dp" />
 
                         <Space
                             android:layout_width="match_parent"
-                            android:layout_height="5dp" />
+                            android:layout_height="10dp" />
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
@@ -538,11 +678,13 @@
                                 tools:ignore="TouchTargetSizeCheck" />
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ProgressBar
+                        <com.google.android.material.progressindicator.LinearProgressIndicator
                             android:id="@+id/progressBar3"
-                            style="?android:attr/progressBarStyleHorizontal"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content" />
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            app:trackCornerRadius="8dp"
+                            app:trackThickness="7dp" />
 
                         <TextView
                             android:id="@+id/textView26"

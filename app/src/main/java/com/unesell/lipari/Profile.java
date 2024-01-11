@@ -65,7 +65,7 @@ public class Profile extends AppCompatActivity {
     ProgressBar loading_profile;
     LinearLayout p1, p2;
 
-    Boolean exit = true;
+    Boolean exit = false; // Если нужно перезапускать основное активити, то поставить true
 
     private RecyclerView recyclerView;
     private RewardAdapter rewardAdapter;

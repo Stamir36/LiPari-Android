@@ -3,9 +3,12 @@ package com.unesell.lipari;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -60,6 +63,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Driver;
 import java.util.ArrayList;
 import java.io.UnsupportedEncodingException;
 
@@ -76,18 +80,18 @@ public class CheckPari extends AppCompatActivity {
     MaterialCardView reward_card;
     LinearLayout check_panel_data;
 
-    //File upload
+    // File upload
     Button btn;
     ImageView img;
-    final int KeyGallery = 100, ReadExternalRequestCode = 200;
+    final int KeyGallery = 100, ReadMediaImagesRequestCode = 200;
     String url_site = "https://unesell.com/";
     File file;
     Boolean fileopen = false;
-
+    String expiriense = "0";
+    String pari_no_content = "no";
     // File See
     RecyclerView fileView;
     ArrayList<String> name = new ArrayList<>();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,36 +99,38 @@ public class CheckPari extends AppCompatActivity {
         setContentView(R.layout.activity_check);
         context = this;
         sPref = getSharedPreferences("Account", MODE_PRIVATE);
-        loadingBar = (ProgressBar) findViewById(R.id.loadingBar2);
-        server_connect_text = (TextView) findViewById(R.id.server_connect_text2);
-        S_SEND = (ConstraintLayout) findViewById(R.id.S_SEND);
-        reward_card = (MaterialCardView) findViewById(R.id.reward_card);
+        loadingBar = findViewById(R.id.loadingBar2);
+        server_connect_text = findViewById(R.id.server_connect_text2);
+        S_SEND = findViewById(R.id.S_SEND);
+        reward_card = findViewById(R.id.reward_card);
         loadingBar.setVisibility(View.VISIBLE);
         server_connect_text.setVisibility(View.VISIBLE);
-        S_SEND.setVisibility(View.GONE); reward_card.setVisibility(View.GONE);
+        S_SEND.setVisibility(View.GONE);
+        reward_card.setVisibility(View.GONE);
         Bundle arguments = getIntent().getExtras();
         ID = arguments.get("pari_id").toString();
-        check_panel_data = (LinearLayout) findViewById(R.id.check_panel_data);
+        check_panel_data = findViewById(R.id.check_panel_data);
         check_panel_data.setVisibility(View.GONE);
 
         fileView = findViewById(R.id.fileView);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         fileView.setLayoutManager(linearLayoutManager);
 
-
-        loadingBar.setVisibility(View.VISIBLE); server_connect_text.setVisibility(View.VISIBLE);
+        loadingBar.setVisibility(View.VISIBLE);
+        server_connect_text.setVisibility(View.VISIBLE);
         ServerInformation();
 
-        //File upload
-        btn = (Button) findViewById(R.id.btn_upload);
-        img = (ImageView) findViewById(R.id.img);
+        // File upload
+        btn = findViewById(R.id.btn_upload);
+        img = findViewById(R.id.img);
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean result = checkPermission(CheckPari.this);
-                if (result)
+                if (result) {
                     galleryIntent();
+                }
             }
         });
     }
@@ -162,6 +168,7 @@ public class CheckPari extends AppCompatActivity {
 
                             // Output info in app
                             runOnUiThread(new Runnable() {
+                                @SuppressLint("SetTextI18n")
                                 @Override
                                 public void run() {
                                     TextView Titles = (TextView) findViewById(R.id.Titles);
@@ -203,6 +210,34 @@ public class CheckPari extends AppCompatActivity {
                                         loadJSONFromURL("https://unesell.com/api/lipari/files.pari.php?id=" + ID);
                                     }
 
+                                    if(stasusPari.equals("executor_send_check")){
+                                        check_panel_data.setVisibility(View.VISIBLE);
+                                        Titles.setText(getResources().getString(R.string.exe_send_check));
+                                        check_name_pari.setText(Name + "\n" + Info);
+                                        check_edit_pari.setText(editing);
+                                        TextView title_reward_sub = (TextView) findViewById(R.id.title_reward_sub);
+                                        title_reward_sub.setText(getResources().getString(R.string.reward_lose_exe));
+
+                                        Button create = (Button) findViewById(R.id.create);
+                                        create.setText(getResources().getString(R.string.check_win));
+
+                                        check_win_pari.setText(getResources().getString(R.string.exe_lose_10_procent_win));
+                                        int exp = Integer.parseInt(expiriens);
+                                        int result_xp = (int) Math.ceil(exp / 10.0) * 10;
+                                        expiriense = result_xp + "";
+                                        xp_check.setText(result_xp + " XP");
+                                        reward_card.setVisibility(View.VISIBLE);
+
+                                        // Delete all card
+                                        MaterialCardView carddetail = (MaterialCardView) findViewById(R.id.carddetail);
+                                        MaterialCardView controlcard = (MaterialCardView) findViewById(R.id.controlcard);
+                                        MaterialCardView filecard = (MaterialCardView) findViewById(R.id.filecard);
+                                        carddetail.setVisibility(View.GONE); controlcard.setVisibility(View.GONE); filecard.setVisibility(View.GONE);
+                                        pari_no_content = "yes";
+
+                                        loadJSONFromURL("https://unesell.com/api/lipari/files.pari.php?id=" + ID);
+                                    }
+
                                     loadingBar.setVisibility(View.GONE);
                                     server_connect_text.setVisibility(View.GONE);
                                     S_SEND.setVisibility(View.VISIBLE);
@@ -227,12 +262,59 @@ public class CheckPari extends AppCompatActivity {
     }
 
     public void Send(View view) {
-        TextInputLayout content_result = (TextInputLayout) findViewById(R.id.content_result);
-        if (content_result.getEditText().getText().length() != 0 && fileopen){
-            uploadResults();
-        }else {
-            Toast.makeText(context, getResources().getString(R.string.error_text_length), Toast.LENGTH_SHORT).show();
+        if(pari_no_content == "no"){
+            TextInputLayout content_result = (TextInputLayout) findViewById(R.id.content_result);
+            if (content_result.getEditText().getText().length() != 0 && fileopen){
+                uploadResults();
+            }else {
+                Toast.makeText(context, getResources().getString(R.string.error_text_length), Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            CloaseChellenge();
         }
+    }
+
+    public void CloaseChellenge() {
+        AsyncHttpClient myClient = new AsyncHttpClient();
+
+        RequestParams params = new RequestParams();
+        TextInputLayout content_result = (TextInputLayout) findViewById(R.id.content_result);
+        loadingBar.setVisibility(View.VISIBLE);
+        server_connect_text.setVisibility(View.VISIBLE);
+        server_connect_text.setText(getResources().getString(R.string.send_upload));
+        S_SEND.setVisibility(View.GONE);
+
+        params.put("id", ID);
+        params.put("content", "Оппонент проиграл и понёс наказание");
+        params.put("expiriense", expiriense);
+
+        myClient.post(url_site + "app/lipari/check/end.pari.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                try {
+                    JSONObject jsonObject = new JSONObject(new String(responseBody));
+                    if (jsonObject.getString("status").equals("success")) {
+                        Intent intent = new Intent(context, DetailsPari.class);
+                        intent.putExtra("pari_id", ID);
+                        context.startActivity(intent);
+                        finish();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getBaseContext(), "Ошибка ответа.", Toast.LENGTH_LONG).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Intent intent = new Intent(context, DetailsPari.class);
+                intent.putExtra("pari_id", ID);
+                context.startActivity(intent);
+                finish();
+            }
+
+        });
     }
 
     public void uploadResults() {
@@ -281,90 +363,116 @@ public class CheckPari extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
-            if (data == null) {
-                return;
-            } else {
-
-                Uri selectedImage = data.getData();
-                String wholeID = android.provider.DocumentsContract.getDocumentId(selectedImage);
-                String id = wholeID.split(":")[1];
-                String[] column = { MediaStore.Images.Media.DATA };
-                String sel = MediaStore.Images.Media._ID + "=?";
-                Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, column, sel, new String[]{ id }, null);
-                String filePath = "";
-                int columnIndex = cursor.getColumnIndex(column[0]);
-
-                if (cursor.moveToFirst()) {
-                    filePath = cursor.getString(columnIndex);
-                }
-                cursor.close();
-
-                if (!filePath.equals(null)) {
-                    file = new File(filePath);
-                    img.setImageBitmap(android.graphics.BitmapFactory.decodeFile(filePath));
+            if (requestCode == KeyGallery) {
+                if (data == null) {
+                    return;
+                } else {
+                    Uri selectedImageUri = data.getData();
+                    img.setImageURI(selectedImageUri);
+                    file = new File(getPathFromUri(selectedImageUri));
                     fileopen = true;
                 }
             }
         }
     }
 
+    private String getPathFromUri(Uri uri) {
+        String path = null;
+        String[] projection = {MediaStore.Images.Media.DATA};
+        try (Cursor cursor = getContentResolver().query(uri, projection, null, null, null)) {
+            if (cursor != null && cursor.moveToFirst()) {
+                int columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                path = cursor.getString(columnIndex);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return path;
+    }
+
+    private static final int REQUEST_PICK_IMAGE = 102;
+
     private void galleryIntent() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select File"), KeyGallery);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            // Используем старый метод для версий Android от 6 до 12 (исключительно)
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+            startActivityForResult(Intent.createChooser(intent, "Select File"), KeyGallery);
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Используем новый метод для Android 13 и выше
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_PICK);
+            intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(intent, KeyGallery);
+        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case ReadExternalRequestCode:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    galleryIntent();
-                } else {
-                    Toast.makeText(getBaseContext(), "Permission problem!", Toast.LENGTH_LONG).show();
-                }
-                break;
+        if (requestCode == ReadMediaImagesRequestCode) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                galleryIntent();
+            } else {
+                Toast.makeText(getBaseContext(), "Permission problem!", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
     public boolean checkPermission(final Context context) {
-        int currentAPIVersion = Build.VERSION.SDK_INT;
-        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+            // Используем старый метод для версий Android до 12 (исключительно)
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
-                    MaterialAlertDialogBuilder mDialogBuilder = new MaterialAlertDialogBuilder(this);
-                    mDialogBuilder.setTitle(getResources().getString(R.string.manifestPerm));
-                    mDialogBuilder.setMessage(getResources().getString(R.string.manifest_perm_storage));
-                    mDialogBuilder
-                            .setCancelable(false)
-                            .setPositiveButton(getResources().getString(R.string.OkLoseExecute),
-                                    new android.content.DialogInterface.OnClickListener() {
-                                        public void onClick(android.content.DialogInterface dialog,int id) {
-                                            // Отправка команды поражения.
-                                            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ReadExternalRequestCode);
-                                        }
-                                    })
-                            .setNegativeButton(getResources().getString(R.string.Cansel),
-                                    new android.content.DialogInterface.OnClickListener() {
-                                        public void onClick(android.content.DialogInterface dialog,int id) {
-                                            dialog.cancel();
-                                        }
-                                    });
-
-                    mDialogBuilder.show();
-
+                    showPermissionRationaleDialog(context, Manifest.permission.READ_EXTERNAL_STORAGE, ReadMediaImagesRequestCode);
                 } else {
-                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ReadExternalRequestCode);
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, ReadMediaImagesRequestCode);
                 }
                 return false;
             } else {
                 return true;
             }
         } else {
-            return true;
+            // Используем новый метод для Android 13 и выше
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_MEDIA_IMAGES) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_MEDIA_IMAGES)) {
+                    showPermissionRationaleDialog(context, Manifest.permission.READ_MEDIA_IMAGES, ReadMediaImagesRequestCode);
+                } else {
+                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_MEDIA_IMAGES}, ReadMediaImagesRequestCode);
+                }
+                return false;
+            } else {
+                return true;
+            }
         }
+    }
+
+    private void showPermissionRationaleDialog(Context context, String permission, int requestCode) {
+        MaterialAlertDialogBuilder mDialogBuilder = new MaterialAlertDialogBuilder(context);
+        mDialogBuilder.setTitle(context.getResources().getString(R.string.manifestPerm));
+        if (permission.equals(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            mDialogBuilder.setMessage(context.getResources().getString(R.string.manifest_perm_storage));
+        } else if (permission.equals(Manifest.permission.READ_MEDIA_IMAGES)) {
+            mDialogBuilder.setMessage(context.getResources().getString(R.string.manifest_perm_storage));
+        }
+        mDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton(context.getResources().getString(R.string.OkLoseExecute),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                ActivityCompat.requestPermissions((Activity) context, new String[]{permission}, requestCode);
+                            }
+                        })
+                .setNegativeButton(context.getResources().getString(R.string.Cansel),
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+        mDialogBuilder.show();
     }
 
     // File see

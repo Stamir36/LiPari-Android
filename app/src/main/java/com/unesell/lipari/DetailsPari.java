@@ -1,9 +1,15 @@
 package com.unesell.lipari;
 
+import android.content.ActivityNotFoundException;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.android.volley.Request;
@@ -12,12 +18,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.card.MaterialCardView;
 import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +61,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 
 import javax.net.ssl.HttpsURLConnection;
 import com.google.android.gms.ads.AdRequest;
@@ -345,13 +360,58 @@ public class DetailsPari extends AppCompatActivity {
                                     voitingAutor.setText(getResources().getString(R.string.voitCount) + ": " + autor_voting);
                                     TextView voitingExecutor = (TextView) findViewById(R.id.voitingExecutor);
                                     voitingExecutor.setText(getResources().getString(R.string.voitCount) + ": " + executor_voting);
-                                    if(backgroundImg != "default"){
-                                        Picasso.get().load(backgroundImg).into(mainBackground);
-                                        mainBackground.setColorFilter(Color.argb(128, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+                                    if (!"default".equals(backgroundImg)) {
+                                        try {
+                                            Glide.with(context)
+                                                    .asBitmap()
+                                                    .load(backgroundImg)
+                                                    .apply(new RequestOptions()
+                                                            .override(1000, 200) // Размер изображения
+                                                            .format(DecodeFormat.PREFER_RGB_565) // Формат декодирования
+                                                            .priority(Priority.HIGH) // Приоритет загрузки
+                                                    )
+                                                    .into(new CustomTarget<Bitmap>() {
+                                                        @Override
+                                                        public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                            int imageWidth = resource.getWidth();
+                                                            int imageHeight = resource.getHeight();
+
+                                                            Bitmap resultBitmap = Bitmap.createBitmap(imageWidth, imageHeight, Bitmap.Config.ARGB_8888);
+
+                                                            for (int x = 0; x < imageWidth; x++) {
+                                                                for (int y = 0; y < imageHeight; y++) {
+                                                                    int pixelColor = resource.getPixel(x, y);
+
+                                                                    double progress = (double) y / imageHeight; // Прогресс снизу вверх
+                                                                    int alpha = (int) (255 * Math.pow(1 - progress, 4)); // Увеличиваем эффект прозрачности
+
+                                                                    int newPixelColor = Color.argb(alpha, Color.red(pixelColor), Color.green(pixelColor), Color.blue(pixelColor));
+                                                                    resultBitmap.setPixel(x, y, newPixelColor);
+                                                                }
+                                                            }
+
+                                                            mainBackground.setImageBitmap(resultBitmap);
+                                                        }
+
+                                                        @Override
+                                                        public void onLoadCleared(@Nullable Drawable placeholder) {
+                                                            // Handle the case where the resource is cleared.
+                                                        }
+                                                    });
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        //mainBackground.setColorFilter(Color.argb(128, 0, 0, 0), PorterDuff.Mode.SRC_ATOP);
+                                    }else {
+                                        mainBackground.setImageResource(R.drawable.m3_red);
                                     }
-                                    if(live_stream == "none"){
-                                        Button openStream = findViewById(R.id.openStream);
-                                        openStream.setVisibility(View.GONE);
+                                    if(Objects.equals(live_stream, "none")){
+                                        MaterialCardView liveplayercard = findViewById(R.id.liveplayercard);
+                                        liveplayercard.setVisibility(View.GONE);
+                                    }else{
+                                        MaterialCardView liveplayercard = findViewById(R.id.liveplayercard);
+                                        liveplayercard.setVisibility(View.VISIBLE);
                                     }
                                     if(stasusPari.equals("search")){ status.setText(getResources().getString(R.string.status_1)); }
                                     if(stasusPari.equals("go")){ status.setText(getResources().getString(R.string.status_2)); }
@@ -438,6 +498,9 @@ public class DetailsPari extends AppCompatActivity {
                                             // Если мы автор.
                                             if(Long.parseLong(autor_id) == Long.parseLong(sPref.getString("ID", ""))){
                                                 if(stasusPari.equals("autor_win_check")){
+                                                    check_ansver.setVisibility(View.VISIBLE);
+                                                }
+                                                if(stasusPari.equals("executor_send_check")){
                                                     check_ansver.setVisibility(View.VISIBLE);
                                                 }
                                             }
@@ -737,8 +800,32 @@ public class DetailsPari extends AppCompatActivity {
     }
 
     public void OpenLiveStream(View view) {
-        Intent intent = new Intent(context, LivePlayer.class);
-        intent.putExtra("StreamID", live_stream);
-        context.startActivity(intent);
+        try {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("vnd.youtube:" + live_stream));
+            intent.putExtra("force_fullscreen", true);
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=" + live_stream));
+            context.startActivity(intent);
+        }
+
+        /* Intent intent = new Intent(context, LivePlayer.class); intent.putExtra("StreamID", live_stream); context.startActivity(intent); */
+    }
+
+    public void CopyLink(View view) {
+        String link = "https://unesell.com/app/lipari/info/?id=" + ID;
+        ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        clipboardManager.setText(link);
+        Resources resources = context.getResources();
+        String toastText = resources.getString(R.string.copy_link_toast);
+        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show();
+    }
+
+    public void ShareLink(View view) {
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String textToShare = getString(R.string.share_message) + " " + "https://unesell.com/app/lipari/info/?id=" + ID;
+        intent.putExtra(Intent.EXTRA_TEXT, textToShare);
+        startActivity(Intent.createChooser(intent, getString(R.string.share_title)));
     }
 }

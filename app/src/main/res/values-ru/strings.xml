@@ -4,8 +4,8 @@
     <string name="action_settings">Настройки</string>
     <string name="OK">Понятно</string>
     <string name="new_pari">Новое пари</string>
-    <string name="all">Все</string>
-    <string name="my_pari">Мои пари</string>
+    <string name="all">Все пари</string>
+    <string name="my_pari">В которых я участвую</string>
     <string name="title_activity_details_pari">Информация о пари</string>
     <string name="title_activity_check">Проверка и отправка результатов</string>
     <string name="connect_pari">Принять участие</string>
@@ -148,6 +148,54 @@
     <string name="Menu_txt">Меню</string>
     <string name="reward_txt">Достижения</string>
     <string name="nav_verison_text">Публичная ранняя версия</string>
+    <string name="share_message">Я участвую в крутом пари! Присоединяйся:</string>
+    <string name="share_title">Поделиться с друзьями</string>
+    <string name="copy_link_toast">Ссылка скопирована!</string>
+
+    <string name="download_image">Скачать</string>
+    <string name="reward_lose_exe">Так как пари было провалено, компенсация исполнителю насчитывается следующим образом:</string>
+    <string name="exe_lose_10_procent_win">Награда для исполнителя 10% от опыта.</string>
+    <string name="image_downloaded_successfully">Image downloaded successfully</string>
+    <string name="failed_to_download_image">Failed to download image</string>
+    <string name="permission_denied_cannot_download_image">Permission denied, cannot download image</string>
+    <string name="login_to_account_txt">Вход в учётную запись</string>
+    <string name="app_name_long">LiPari - Социальная сеть</string>
+    <string name="hello_1">Доброе утро,</string>
+    <string name="hello_2">Добрый день,</string>
+    <string name="hello_3">Добрый вечер,</string>
+    <string name="balanse">Баланс</string>
+    <string name="what_need_money_txt">Для чего нужны монеты?</string>
+    <string name="what_need_money_1">Монеты - это внутриигровая валюта, предназначенная для покупки разных активов. С помощью них вы можете украсить свои пары, покупая фоны для ваших челленджей.</string>
+    <string name="what_need_money_2">Вы можете получить монеты следующими способами:</string>
+    <string name="what_need_money_3">● За повышение уровня</string>
+    <string name="what_need_money_4">● За просмотр рекламы в приложении</string>
+    <string name="spend_txt">Потратить</string>
+    <string name="share_txt">Поделиться</string>
+    <string name="share_sub_text">Скопируйте и отправьте ссылку своим друзьям!</string>
+    <string name="copy_link">Скопировать ссылку</string>
+    <string name="search_image">Поиск изображений</string>
+    <string name="open_store_in_browser">Открыть магазин в браузере</string>
+    <string name="end_images_txt">На этом всё, поищем что-нибудь ещё.</string>
+    <string name="store_title">Магазин ассетов</string>
+    <string name="store_subtitle">Украшайте свои пари индивидуальными изображениями</string>
+    <string name="challenge_background">Фоновое изображение</string>
+    <string name="store_detail_title_one">К какому пари применить?</string>
+    <string name="store_detail_title_two">Покупка ассета</string>
+    <string name="buy_assets">Купить за 10 монет</string>
+    <string name="nochellenge_title">В данный момент вы не участвуете в челлендже</string>
+    <string name="nochellenge_subtitle">Для того, чтобы установить фон, примите участие в любом пари коротое вы можете выбрать в главном меню</string>
+    <string name="not_enough_coins_message">Заработайте больше монет, перед тем, как купить этот фон</string>
+    <string name="not_enough_coins_title">Недостаточно монет</string>
+    <string name="okay">ОК</string>
+    <string name="purchase_completed_title">Покупка выполнена успешно</string>
+    <string name="open_challenge">Открыть пари</string>
+    <string name="watch_live">Смотреть</string>
+    <string name="live_title_txt">Прямой эфир</string>
+    <string name="live_sub_txt">Смотрите прямую трансляцию заданную участниками</string>
+    <string name="store_background_text">Украшайте свои челленджи</string>
+    <string name="store_background_subtext">Покупайте разные фоны на любую тематику. Воспользуйтесь поиском, чтобы начать.</string>
+    <string name="main_store_info_title">С чего начать:</string>
+
 
     <string-array name="sex">
         <item>Все пользователи</item>

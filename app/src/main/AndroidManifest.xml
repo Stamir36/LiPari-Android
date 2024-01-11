@@ -2,11 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission
+        android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="32" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
 
     <application
@@ -22,6 +29,10 @@
         android:theme="@style/ThemeOverlay.Material3.DynamicColors.DayNight"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".Store"
+            android:exported="false"
+            android:theme="@style/Theme.Material3.DayNight.NoActionBar"/>
         <activity
             android:name=".LivePlayer"
             android:exported="false"
@@ -54,7 +65,8 @@
         <activity
             android:name=".ImageViewGallary"
             android:exported="false"
-            android:theme="@style/Theme.Material3.DayNight.NoActionBar">
+            android:label="@string/Title_imageView"
+            android:theme="@style/Theme.Material3.DayNight">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

@@ -4,8 +4,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.AssetFileDescriptor;
+import android.graphics.Matrix;
+import android.graphics.SurfaceTexture;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.view.Surface;
+import android.view.TextureView;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.content.Context;
 import android.net.Uri;
@@ -25,18 +32,25 @@ import com.squareup.picasso.Picasso;
 import android.content.IntentSender;
 import android.content.ClipboardManager;
 import android.content.ClipData;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class SplashScreen extends AppCompatActivity {
+public class SplashScreen extends AppCompatActivity implements SurfaceHolder.Callback {
 
     private static final int REQ_ONE_TAP = 2;  // Can be any integer unique to the Activity.
     private boolean showOneTapUI = true;
@@ -49,6 +63,10 @@ public class SplashScreen extends AppCompatActivity {
     private BeginSignInRequest signInRequest;
     private BeginSignInRequest signUpRequest;
 
+    private MediaPlayer mediaPlayer;
+    private SurfaceView surfaceView;
+    private SurfaceHolder surfaceHolder;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +74,13 @@ public class SplashScreen extends AppCompatActivity {
         context = this;
         MainBackground = (ImageView) findViewById(R.id.MainBackground);
         sPref = getSharedPreferences("Account", MODE_PRIVATE);
+
+        surfaceView = findViewById(R.id.surfaceView);
+        surfaceHolder = surfaceView.getHolder();
+        surfaceHolder.addCallback(this);
+
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping(true);
 
         oneTapClient = Identity.getSignInClient(this);
         // Авторизация
@@ -79,6 +104,58 @@ public class SplashScreen extends AppCompatActivity {
                         .setFilterByAuthorizedAccounts(false)
                         .build())
                 .build();
+    }
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        try {
+            Uri videoUri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.background);
+
+            mediaPlayer.setDisplay(surfaceHolder);
+
+            mediaPlayer.setDataSource(this, videoUri);
+
+            mediaPlayer.prepare();
+
+            mediaPlayer.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+        if (mediaPlayer != null) {
+            int videoWidth = mediaPlayer.getVideoWidth();
+            int videoHeight = mediaPlayer.getVideoHeight();
+
+            float widthRatio = (float) width / videoWidth;
+            float heightRatio = (float) height / videoHeight;
+
+            float scaleFactor = Math.max(widthRatio, heightRatio);
+
+            int newWidth = (int) (videoWidth * scaleFactor);
+            int newHeight = (int) (videoHeight * scaleFactor);
+
+            int marginLeft = (width - newWidth) / 2;
+            int marginTop = (height - newHeight) / 2;
+
+            ViewGroup.LayoutParams params = surfaceView.getLayoutParams();
+            params.width = newWidth;
+            params.height = newHeight;
+            surfaceView.setLayoutParams(params);
+            surfaceView.setPadding(marginLeft, marginTop, marginLeft, marginTop);
+
+            // Обновляем плеер
+            mediaPlayer.setDisplay(surfaceHolder);
+        }
+    }
+
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        // Освобождаем ресурсы MediaPlayer
+        //mediaPlayer.release();
     }
 
     @Override

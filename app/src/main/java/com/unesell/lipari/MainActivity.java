@@ -1,22 +1,44 @@
 package com.unesell.lipari;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Shader;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.content.Intent;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.Priority;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Handler;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -31,6 +53,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.fragment.app.FragmentManager;
+
+import com.squareup.picasso.Target;
 import com.unesell.lipari.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -41,10 +65,13 @@ import android.content.Context;
 import com.google.android.material.navigation.NavigationView;
 
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
@@ -58,6 +85,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -67,6 +95,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Calendar;
+
 import com.squareup.picasso.Picasso;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -89,11 +119,16 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> info = new ArrayList<>();
     ArrayList<String> xp = new ArrayList<>();
     ArrayList<String> status = new ArrayList<>();
+    ArrayList<String> paribackground = new ArrayList<>();
     ArrayList<String> ID = new ArrayList<>();
     Context context;
     ImageView avatar;
     NavigationView nav_view;
     DrawerLayout drawerLayout;
+
+    private boolean isCardExpanded = false;
+    private boolean isIconRotated = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
+
+        MaterialCardView mainPariCard = findViewById(R.id.MainPariCard);
 
         if(ID.equals("null") || ID == ""){
             Intent intent = new Intent(context, SplashScreen.class);
@@ -178,6 +215,17 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+            MaterialButton btnFullscreen = findViewById(R.id.btnfullscren);
+            MaterialCardView levelCard = findViewById(R.id.levelCard);
+            btnFullscreen.setOnClickListener(view -> {
+                animateCardExpansion();
+                animateIconRotation(btnFullscreen);
+            });
+
+            new Handler().postDelayed(() -> {
+                animateMarginChange(levelCard, -100);
+            }, 3000);
+
             loadJSONFromURL(JSON_URL);
 
             UpdateData();
@@ -205,13 +253,78 @@ public class MainActivity extends AppCompatActivity {
                             String nameAccount = jsonObject.getString("name");
                             String avatar_u = jsonObject.getString("avatar");
                             String xp_now = jsonObject.getString("xp_now");
+                            String money = jsonObject.getString("money");
+                            String premium = jsonObject.getString("premium");
+                            String background = jsonObject.getString("imgBackground");
 
                             runOnUiThread(new Runnable() {
+                                @SuppressLint("SetTextI18n")
                                 @Override
                                 public void run() {
                                     TextView name = (TextView) findViewById(R.id.UserName);
                                     name.setText(nameAccount);
+
+                                    TextView moneyAccount = (TextView) findViewById(R.id.moneyAccount);
+                                    TextView level_now = (TextView) findViewById(R.id.level_now);
+                                    TextView xp_main = (TextView) findViewById(R.id.xp_main);
+                                    ProgressBar level_progress = (ProgressBar) findViewById(R.id.level_progress);
+                                    moneyAccount.setText(money + " " + context.getResources().getString(R.string.money));
+
+                                    if (premium.equals("none")){
+                                        MaterialCardView pro_account_card = (MaterialCardView) findViewById(R.id.pro_account_card);
+                                        pro_account_card.setVisibility(View.GONE);
+                                    }
+
+                                    xp_main.setText(xp_now + " XP");
+
+                                    level_progress.setMax(1000);
+                                    level_progress.setProgress(Integer.parseInt( xp_now.substring(xp_now.length() - 3, xp_now.length())));
+                                    String level = xp_now.substring(0, xp_now.length() - 3);
+                                    if (level.length() == 0){ level = "0"; }
+                                    level_now.setText(getResources().getString(R.string.level) + ": " + level);
+
                                     Picasso.get().load("https://unesell.com/data/users/avatar/" + avatar_u).into(avatar);
+
+                                    ImageView imageAccountBack = findViewById(R.id.imageAccountBack);
+
+                                    try {
+                                        Glide.with(context)
+                                                .asBitmap()
+                                                .load(background)
+                                                .apply(new RequestOptions()
+                                                        .override(200, 200) // Размер изображения
+                                                        .format(DecodeFormat.PREFER_RGB_565) // Формат декодирования
+                                                        .priority(Priority.HIGH) // Приоритет загрузки
+                                                )
+                                                .into(new CustomTarget<Bitmap>() {
+                                                    @Override
+                                                    public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                                                        int imageWidth = resource.getWidth();
+                                                        int imageHeight = resource.getHeight();
+
+                                                        Bitmap resultBitmap = Bitmap.createBitmap(imageWidth, imageHeight, Bitmap.Config.ARGB_8888);
+
+                                                        for (int x = 0; x < imageWidth; x++) {
+                                                            for (int y = 0; y < imageHeight; y++) {
+                                                                int pixelColor = resource.getPixel(x, y);
+                                                                int alpha = (int) (255 * Math.pow((float) x / imageWidth, 3)); // Рассчитываем альфа-канал
+
+                                                                int newPixelColor = Color.argb(alpha, Color.red(pixelColor), Color.green(pixelColor), Color.blue(pixelColor));
+                                                                resultBitmap.setPixel(x, y, newPixelColor);
+                                                            }
+                                                        }
+
+                                                        imageAccountBack.setImageBitmap(resultBitmap);
+                                                    }
+
+                                                    @Override
+                                                    public void onLoadCleared(@Nullable Drawable placeholder) {
+                                                        // Handle the case where the resource is cleared.
+                                                    }
+                                                });
+                                    }catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
 
                                     SharedPreferences.Editor ed = sPref.edit();
                                     ed.putString("avatar_id", avatar_u);
@@ -256,6 +369,21 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }).start();
+
+        TextView textHello = findViewById(R.id.textHello);
+        Calendar calendar = Calendar.getInstance();
+        int hourOfDay = calendar.get(Calendar.HOUR_OF_DAY);
+
+        String greeting;
+        if (hourOfDay >= 6 && hourOfDay < 12) {
+            greeting = getResources().getString(R.string.hello_1);
+        } else if (hourOfDay >= 12 && hourOfDay < 18) {
+            greeting = getResources().getString(R.string.hello_2);
+        } else {
+            greeting = getResources().getString(R.string.hello_3);
+        }
+
+        textHello.setText(greeting);
     }
 
     public void SexChence(String sex)
@@ -299,11 +427,12 @@ public class MainActivity extends AppCompatActivity {
                                 info.add(userData.getString("Info").replace("<br/>", "\n"));
                                 xp.add(userData.getString("xp_boost") + " XP");
                                 status.add(userData.getString("stasus"));
+                                paribackground.add(userData.getString("backgroundImg"));
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        HelperAdapter helperAdapter = new HelperAdapter(name, info, xp, ID, status, MainActivity.this);
+                        HelperAdapter helperAdapter = new HelperAdapter(name, info, xp, ID, status, paribackground, MainActivity.this);
                         recyclerView.setAdapter(helperAdapter);
                     }
                 },
@@ -357,9 +486,58 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Open_store(View view) {
-        String url = "https://unesell.com/app/lipari/store/";
-        Intent openPage= new Intent(Intent.ACTION_VIEW, android.net.Uri.parse(url));
-        startActivity(openPage);
+        Intent store = new Intent(context, Store.class);
+        startActivity(store);
     }
 
+    private void animateCardExpansion() {
+        MaterialCardView mainPariCard = findViewById(R.id.MainPariCard);
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) mainPariCard.getLayoutParams();
+
+        int targetTopMarginPx = isCardExpanded ? (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, 130, getResources().getDisplayMetrics()) : 0;
+
+        ValueAnimator animator = ValueAnimator.ofInt(params.topMargin, targetTopMarginPx);
+        animator.setDuration(500);
+        animator.addUpdateListener(animation -> {
+            int animatedValue = (int) animation.getAnimatedValue();
+            params.topMargin = animatedValue;
+            mainPariCard.setLayoutParams(params);
+            mainPariCard.requestLayout(); // Force layout update
+        });
+        animator.start();
+        isCardExpanded = !isCardExpanded;
+    }
+
+    private void animateIconRotation(MaterialButton btnFullscreen) {
+        ObjectAnimator rotationAnimator;
+
+        if (isIconRotated) {
+            rotationAnimator = ObjectAnimator.ofFloat(btnFullscreen, "rotation", 45, 0);
+        } else {
+            rotationAnimator = ObjectAnimator.ofFloat(btnFullscreen, "rotation", 0, 45);
+        }
+
+        rotationAnimator.setDuration(500);
+        rotationAnimator.start();
+        isIconRotated = !isIconRotated;
+    }
+
+    private void animateMarginChange(View view, int targetMarginDp) {
+        int targetMarginPx = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP, targetMarginDp, getResources().getDisplayMetrics());
+
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        ValueAnimator animator = ValueAnimator.ofInt(params.bottomMargin, targetMarginPx);
+        animator.setDuration(500);
+
+        animator.addUpdateListener(animation -> {
+            int animatedValue = (int) animation.getAnimatedValue();
+            params.bottomMargin = animatedValue;
+            view.setLayoutParams(params);
+            view.requestLayout();
+        });
+
+        animator.start();
+    }
 }

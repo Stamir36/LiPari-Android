@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="?android:attr/windowBackgroundFallback"/>
+    <corners android:radius="100dp"/>
+    <stroke android:color="?android:attr/colorControlHighlight" android:width="1dp"/>
+</shape>

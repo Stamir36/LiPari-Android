@@ -10,11 +10,12 @@
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/commitcard"
+        style="?attr/materialCardViewFilledStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="24dp"
+        android:layout_marginEnd="16dp"
         android:focusable="true"
         android:theme="@style/Theme.Material3.DynamicColors.DayNight"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,16 +42,15 @@
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="25dp"
                     android:text="@string/ect"
                     android:textAppearance="?attr/textAppearanceTitleMedium"
-                    android:textSize="20sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/info"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="3dp"
                     android:text="@string/ect"
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?android:attr/textColorSecondary"
@@ -78,14 +78,15 @@
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/avatar"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="12dp"
         android:src="@drawable/account"
         app:civ_border_color="#2196F3"
         app:civ_border_width="2dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -223,6 +223,7 @@
                 </LinearLayout>
 
                 <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/carddetail"
                     style="?attr/materialCardViewElevatedStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
