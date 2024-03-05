@@ -3,6 +3,13 @@
 # LiPari (Android) - Conduct online challenges
 Mobile client for the LiPari social network, which allows you to view and create challenges with friends.
 
+> #### Attention!
+>
+> - Hosting for the site unesell.com ends on March 17th.
+> - Due to the fact that there is no way to pay for it, all online services will be unavailable.
+> 
+>  *Thank you* for being interested in **my development!**
+
 In the mobile client, you can do everything that you can do in the Web version:
 
 - Log in to your account, create a challenge (enter conditions, rewards and punishments), invite friends or wait for someone from all over the world to join you.
